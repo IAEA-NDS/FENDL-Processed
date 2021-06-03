@@ -1,0 +1,3 @@
+[submodule "fendl-endf"]
+	path = fendl-endf
+	url = https://github.com/IAEA-NDS/FENDL-ENDF
