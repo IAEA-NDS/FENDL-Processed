@@ -1,0 +1,26 @@
+Bootstrap: docker
+From: ubuntu:18.04
+
+%files
+    fendl-processing.py /opt/fendl-processing.py
+
+%post
+
+    apt update
+    apt install -y git=1:2.17.1-1ubuntu0.9 &&
+    apt install -y cmake=3.10.2-1ubuntu2.18.04.2 &&
+    apt install -y gfortran=4:7.4.0-1ubuntu2.3 &&
+    apt install -y python3=3.6.7-1~18.04 &&
+    cd /opt &&
+    git clone https://github.com/IAEA-NDS/NJOY2016.git &&
+    cd NJOY2016 &&
+    git checkout njoy2016-fendl32 &&
+    mkdir bin && cd bin &&
+    cmake -D CMAKE_BUILD_TYPE=Release .. &&
+    make &&
+    cd /usr/local/bin &&
+    ln -s /opt/NJOY2016/bin
+
+%runscript
+
+    exec python3 /opt/fendl-processing.py
