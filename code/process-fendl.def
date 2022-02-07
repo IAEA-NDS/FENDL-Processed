@@ -2,19 +2,21 @@ Bootstrap: docker
 From: ubuntu:18.04
 
 %files
-    fendl-processing.py /opt/fendl-processing.py
+
+    process-fendl.py /opt/process-fendl.py
 
 %post
 
-    apt update
+    apt update &&
     apt install -y git=1:2.17.1-1ubuntu0.9 &&
     apt install -y cmake=3.10.2-1ubuntu2.18.04.2 &&
     apt install -y gfortran=4:7.4.0-1ubuntu2.3 &&
-    apt install -y python3=3.6.7-1~18.04 &&
+    apt install -y python3.7=3.7.5-2ubuntu1~18.04.2 &&
+    apt install -y ghostscript=9.26~dfsg+0-0ubuntu0.18.04.15 &&
     cd /opt &&
     git clone https://github.com/IAEA-NDS/NJOY2016.git &&
     cd NJOY2016 &&
-    git checkout njoy2016-fendl32 &&
+    git checkout 304a3e92bc037982126b6c7ab3cea4baabf597b1 &&
     mkdir bin && cd bin &&
     cmake -D CMAKE_BUILD_TYPE=Release .. &&
     make &&
@@ -23,4 +25,4 @@ From: ubuntu:18.04
 
 %runscript
 
-    exec python3 /opt/fendl-processing.py
+    exec python3.7 /opt/process-fendl.py

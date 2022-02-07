@@ -45,7 +45,7 @@ def filehash(fname):
 def run_fendl_njoy(pardic):
     """Invoke NJOY for ENDF files in FENDL library."""
     tmpdir = tempfile.TemporaryDirectory()
-    shutil.copy(pardic['endf'], os.path.join(tmpdir.name, 'tape20')) 
+    shutil.copy(pardic['n_endf'], os.path.join(tmpdir.name, 'tape20')) 
     shutil.copy(pardic['ph_endf'], os.path.join(tmpdir.name, 'tape40')) 
     shutil.copy(pardic['njoyinp'], os.path.join(tmpdir.name, 'input')) 
 
@@ -54,6 +54,7 @@ def run_fendl_njoy(pardic):
                          text=True, cwd = tmpdir.name)
     njoyinp.close()
     ret.check_returncode()
+
     shutil.copy(os.path.join(tmpdir.name, 'tape29'), pardic['ace'])
     shutil.copy(os.path.join(tmpdir.name, 'tape35'), pardic['aceplot'])
     shutil.copy(os.path.join(tmpdir.name, 'tape31'), pardic['g'])
@@ -62,8 +63,12 @@ def run_fendl_njoy(pardic):
     shutil.copy(os.path.join(tmpdir.name, 'tape44'), pardic['m'])
     shutil.copy(os.path.join(tmpdir.name, 'output'), pardic['njoyout'])
     tmpdir.cleanup()
-    return
 
+    ret = subprocess.run(['ps2pdf', pardic['aceplot'], pardic['aceplotpdf']])
+    ret.check_returncode()
+    ret = subprocess.run(['ps2pdf', pardic['htrplot'], pardic['htrplotpdf']])
+    ret.check_returncode()
+    return
 
 
 # specific functions to process the endf files
@@ -96,7 +101,7 @@ def determine_fendl_paths(info, repodir, njoyexe):
     """Return dictionary with paths to FENDL paths (ace, plots, etc.).""" 
     if info['incpart'] != 'n':
         raise ValueError('The info dic should be for incident neutrons')
-    endf_file = '%s_%04d_%d-%s-%s%s.endf' % (info['incpart'], info['matnr'],
+    n_endf_file = '%s_%04d_%d-%s-%s%s.endf' % (info['incpart'], info['matnr'],
                                            info['charge'], info['symb'],
                                            info['mass'], info['meta'])
     ph_endf_file = 'ph_%02d00_%d-%s.endf' % (info['charge'], info['charge'], info['symb'])
@@ -109,10 +114,12 @@ def determine_fendl_paths(info, repodir, njoyexe):
     njoyout_file = ace_file + '.out'
     njoyinp_file = ace_file + '.nji'
     htrplot_file = ace_file + '_htr.ps'
+    htrplot_pdffile = ace_file + '_htr.pdf'
     aceplot_file = ace_file + '_ace.ps'
+    aceplot_pdffile = ace_file + '_ace.pdf'
     track_file = ace_file + '.json'
     fendl_paths = {
-        'endf': os.path.join(repodir, 'fendl-endf/general-purpose/neutron', endf_file),
+        'n_endf': os.path.join(repodir, 'fendl-endf/general-purpose/neutron', n_endf_file),
         'ph_endf': os.path.join(repodir, 'fendl-endf/general-purpose/atom', ph_endf_file),
         'gam': os.path.join(repodir, 'general-purpose/atom/group', gam_file),
         'g': os.path.join(repodir, 'general-purpose/neutron/group', g_file),
@@ -120,7 +127,9 @@ def determine_fendl_paths(info, repodir, njoyexe):
         'ace': os.path.join(repodir, 'general-purpose/neutron/ace', ace_file),
         'xsd': os.path.join(repodir, 'general-purpose/neutron/ace', xsd_file),
         'aceplot': os.path.join(repodir, 'general-purpose/neutron/plot', aceplot_file),
+        'aceplotpdf': os.path.join(repodir, 'general-purpose/neutron/plot', aceplot_pdffile),
         'htrplot': os.path.join(repodir, 'general-purpose/neutron/plot', htrplot_file),
+        'htrplotpdf': os.path.join(repodir, 'general-purpose/neutron/plot', htrplot_pdffile),
         'njoyinp': os.path.join(repodir, 'general-purpose/neutron/njoy', njoyinp_file),
         'njoyout': os.path.join(repodir, 'general-purpose/neutron/njoy', njoyout_file),
         'track': os.path.join(repodir, 'code/trackdb', track_file),
@@ -134,8 +143,8 @@ def check_input_files_available(fendl_paths):
         raise FileNotFoundError('NJOY2016 was not found at the specified path: ' + fendl_paths['njoyexe'])
     if not os.path.isfile(fendl_paths['njoyinp']):
         raise FileNotFoundError('NJOY2016 input file is missing: ' + fendl_paths['njoyinp'])
-    if not os.path.isfile(fendl_paths['endf']):
-        raise FileNotFoundError('neutron endf file is missing: ' + fendl_paths['endf'])
+    if not os.path.isfile(fendl_paths['n_endf']):
+        raise FileNotFoundError('neutron endf file is missing: ' + fendl_paths['n_endf'])
     if not os.path.isfile(fendl_paths['ph_endf']):
         raise FileNotFoundError('photo-atomic endf file is missing: ' + fendl_paths['ph_endf'])
     return
@@ -154,7 +163,7 @@ def should_reprocess(info, repodir, njoyexe):
     curhashes = {k: filehash(f) for k,f in fendl_paths.items()}
     for k in curhashes:
         if curhashes[k] != storedhashes[k]:
-            if k not in ('endf','ph_endf','njoyinp'):
+            if k not in ('n_endf','ph_endf','njoyinp'):
                 raise ValueError('Hashes of output files do not match those in trackdb')
             return True
     return False
@@ -166,7 +175,7 @@ def process_fendl_endf(info, repodir, njoyexe):
     check_input_files_available(fendl_paths)
     if should_reprocess(info, repodir, njoyexe):
         for k in fendl_paths:
-            if k in ('endf', 'ph_endf', 'njoyinp', 'xsd', 'njoyexe'):
+            if k in ('n_endf', 'ph_endf', 'njoyinp', 'xsd', 'njoyexe'):
                 continue  # we do not delete input files!
             if os.path.isfile(fendl_paths[k]) or os.path.islink(fendl_paths[k]):
                 os.unlink(fendl_paths[k])
