@@ -4,6 +4,7 @@ From: ubuntu:18.04
 %files
 
     process-fendl.py /opt/process-fendl.py
+    construct_xsd_file.py /opt/construct_xsd_file.py
 
 %post
 
