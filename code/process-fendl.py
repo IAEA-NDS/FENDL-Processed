@@ -5,7 +5,7 @@
 # Date:         2022/02/06
 # Institution:  IAEA
 #
-# This script is a driver to NJOY2016 to
+# This script is a driver for NJOY2016 to
 # produce the processed files of the FENDL library
 # based on the neutron and photo-atomic ENDF files.
 #
@@ -26,6 +26,8 @@ import sys
 import json
 import hashlib
 import re
+
+from construct_xsd_file import write_xsd_file
 
 
 # auxiliary functions
@@ -56,6 +58,7 @@ def run_fendl_njoy(pardic):
     ret.check_returncode()
 
     shutil.copy(os.path.join(tmpdir.name, 'tape29'), pardic['ace'])
+    write_xsd_file(pardic['ace'], pardic['xsd'])
     shutil.copy(os.path.join(tmpdir.name, 'tape35'), pardic['aceplot'])
     shutil.copy(os.path.join(tmpdir.name, 'tape31'), pardic['g'])
     shutil.copy(os.path.join(tmpdir.name, 'tape32'), pardic['htrplot'])
@@ -175,7 +178,7 @@ def process_fendl_endf(info, repodir, njoyexe):
     check_input_files_available(fendl_paths)
     if should_reprocess(info, repodir, njoyexe):
         for k in fendl_paths:
-            if k in ('n_endf', 'ph_endf', 'njoyinp', 'xsd', 'njoyexe'):
+            if k in ('n_endf', 'ph_endf', 'njoyinp', 'njoyexe'):
                 continue  # we do not delete input files!
             if os.path.isfile(fendl_paths[k]) or os.path.islink(fendl_paths[k]):
                 os.unlink(fendl_paths[k])
