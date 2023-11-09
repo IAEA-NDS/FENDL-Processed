@@ -3,7 +3,9 @@ From: ubuntu:22.04
 
 %files
 
-    process-fendl.py /opt/process-fendl.py
+    process_fendl.py /opt/process_fendl.py
+    process_fendl_neutron.py /opt/process_fendl_neutron.py
+    process_fendl_proton.py /opt/process_fendl_proton.py
     construct_xsd_file.py /opt/construct_xsd_file.py
 
 %post
@@ -27,4 +29,4 @@ From: ubuntu:22.04
 
 %runscript
 
-    exec python /opt/process-fendl.py
+    exec python /opt/process_fendl.py "$@"

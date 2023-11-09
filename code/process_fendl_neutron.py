@@ -13,7 +13,7 @@
 #     Run from the root directory of the
 #     FENDL-processed directory:
 #
-#     python fendl-processing.py
+#     python process-fendl-neutron.py
 #
 ############################################################
 
