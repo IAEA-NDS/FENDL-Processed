@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: ubuntu:18.04
+From: ubuntu:22.04
 
 %files
 
@@ -9,15 +9,16 @@ From: ubuntu:18.04
 %post
 
     apt update &&
-    apt install -y git=1:2.17.1-1ubuntu0.9 &&
-    apt install -y cmake=3.10.2-1ubuntu2.18.04.2 &&
-    apt install -y gfortran=4:7.4.0-1ubuntu2.3 &&
-    apt install -y python3.7=3.7.5-2ubuntu1~18.04.2 &&
-    apt install -y ghostscript=9.26~dfsg+0-0ubuntu0.18.04.15 &&
+    apt install -y git=1:2.34.1-1ubuntu1.10 &&
+    apt install -y cmake=3.22.1-1ubuntu1.22.04.1 &&
+    apt install -y gfortran=4:11.2.0-1ubuntu1 &&
+    apt install -y python-is-python3=3.9.2-2 &&
+    apt install -y ghostscript=9.55.0~dfsg1-0ubuntu5.5 &&
     cd /opt &&
     git clone https://github.com/IAEA-NDS/NJOY2016.git &&
     cd NJOY2016 &&
-    git checkout 304a3e92bc037982126b6c7ab3cea4baabf597b1 &&
+    # checkout NJOY2016.72 including packages provided by IAEA-NDS
+    git checkout 078f3ab033ed15340ec0c2ab1e2343e3a08d545c &&
     mkdir bin && cd bin &&
     cmake -D CMAKE_BUILD_TYPE=Release .. &&
     make &&
@@ -26,4 +27,4 @@ From: ubuntu:18.04
 
 %runscript
 
-    exec python3.7 /opt/process-fendl.py
+    exec python /opt/process-fendl.py
