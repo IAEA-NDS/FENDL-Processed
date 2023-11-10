@@ -2,7 +2,7 @@
 #
 # Author:       Georg Schnabel
 # Email:        g.schnabel@iaea.org
-# Date:         2022/02/06
+# Date:         2023/11/10
 # Institution:  IAEA
 #
 # This script is a driver for NJOY2016 to
@@ -47,9 +47,9 @@ def filehash(fname):
 def run_fendl_njoy(pardic):
     """Invoke NJOY for ENDF files in FENDL library."""
     tmpdir = tempfile.TemporaryDirectory()
-    shutil.copy(pardic['n_endf'], os.path.join(tmpdir.name, 'tape20')) 
-    shutil.copy(pardic['ph_endf'], os.path.join(tmpdir.name, 'tape40')) 
-    shutil.copy(pardic['njoyinp'], os.path.join(tmpdir.name, 'input')) 
+    shutil.copy(pardic['n_endf'], os.path.join(tmpdir.name, 'tape20'))
+    shutil.copy(pardic['ph_endf'], os.path.join(tmpdir.name, 'tape40'))
+    shutil.copy(pardic['njoyinp'], os.path.join(tmpdir.name, 'input'))
 
     njoyinp = open(os.path.join(tmpdir.name, 'input'))
     ret = subprocess.run([pardic['njoyexe']], stdin=njoyinp,
@@ -100,8 +100,8 @@ def get_endf_info(fpath):
     return info
 
 
-def determine_fendl_paths(info, repodir, njoyexe):
-    """Return dictionary with paths to FENDL paths (ace, plots, etc.).""" 
+def determine_fendl_paths(info, repodir, njoyexe, njoylib):
+    """Return dictionary with paths to FENDL paths (ace, plots, etc.)."""
     if info['incpart'] != 'n':
         raise ValueError('The info dic should be for incident neutrons')
     n_endf_file = '%s_%04d_%d-%s-%s%s.endf' % (info['incpart'], info['matnr'],
@@ -110,8 +110,8 @@ def determine_fendl_paths(info, repodir, njoyexe):
     ph_endf_file = 'ph_%02d00_%d-%s.endf' % (info['charge'], info['charge'], info['symb'])
     padsymb = ('%-2s' % info['symb']).replace(' ','_')
     ace_file = '%02d%s%03d%s' % (info['charge'], padsymb, info['mass'], info['meta'])
-    xsd_file = ace_file + '.xsd' 
-    g_file = ace_file + '.g' 
+    xsd_file = ace_file + '.xsd'
+    g_file = ace_file + '.g'
     m_file = ace_file + '.m'
     gam_file = ace_file + '.gam'
     njoyout_file = ace_file + '.out'
@@ -135,8 +135,9 @@ def determine_fendl_paths(info, repodir, njoyexe):
         'htrplotpdf': os.path.join(repodir, 'general-purpose/neutron/plot', htrplot_pdffile),
         'njoyinp': os.path.join(repodir, 'general-purpose/neutron/njoy', njoyinp_file),
         'njoyout': os.path.join(repodir, 'general-purpose/neutron/njoy', njoyout_file),
-        'track': os.path.join(repodir, 'code/trackdb', track_file),
-        'njoyexe': njoyexe
+        'track': os.path.join(repodir, 'trackdb/trackdb_neutron', track_file),
+        'njoyexe': njoyexe,
+        'njoylib': njoylib
     }
     return fendl_paths
 
@@ -144,6 +145,8 @@ def determine_fendl_paths(info, repodir, njoyexe):
 def check_input_files_available(fendl_paths):
     if not os.path.isfile(fendl_paths['njoyexe']):
         raise FileNotFoundError('NJOY2016 was not found at the specified path: ' + fendl_paths['njoyexe'])
+    if not os.path.isfile(fendl_paths['njoylib']):
+        raise FileNotFoundError('NJOY2016 library was not found at the specified path: ' + fendl_paths['njoylib'])
     if not os.path.isfile(fendl_paths['njoyinp']):
         raise FileNotFoundError('NJOY2016 input file is missing: ' + fendl_paths['njoyinp'])
     if not os.path.isfile(fendl_paths['n_endf']):
@@ -153,9 +156,9 @@ def check_input_files_available(fendl_paths):
     return
 
 
-def should_reprocess(info, repodir, njoyexe):
+def should_reprocess(info, repodir, njoyexe, njoylib):
     """Return boolean indicating whether running NJOY is necessary"""
-    fendl_paths = determine_fendl_paths(info, repodir, njoyexe)
+    fendl_paths = determine_fendl_paths(info, repodir, njoyexe, njoylib)
     for k,f in fendl_paths.items():
         if not os.path.isfile(f):
             return True
@@ -172,13 +175,13 @@ def should_reprocess(info, repodir, njoyexe):
     return False
 
 
-def process_fendl_endf(info, repodir, njoyexe):
+def process_fendl_endf(info, repodir, njoyexe, njoylib):
     """Process one neutron ENDF file in FENDL library."""
-    fendl_paths = determine_fendl_paths(info, repodir, njoyexe)
+    fendl_paths = determine_fendl_paths(info, repodir, njoyexe, njoylib)
     check_input_files_available(fendl_paths)
-    if should_reprocess(info, repodir, njoyexe):
+    if should_reprocess(info, repodir, njoyexe, njoylib):
         for k in fendl_paths:
-            if k in ('n_endf', 'ph_endf', 'njoyinp', 'njoyexe'):
+            if k in ('n_endf', 'ph_endf', 'njoyinp', 'njoyexe', 'njoylib'):
                 continue  # we do not delete input files!
             if os.path.isfile(fendl_paths[k]) or os.path.islink(fendl_paths[k]):
                 os.unlink(fendl_paths[k])
@@ -190,19 +193,19 @@ def process_fendl_endf(info, repodir, njoyexe):
     return
 
 
-def process_fendl_file(fname, repodir, njoyexe):
+def process_fendl_file(fname, repodir, njoyexe, njoylib):
     endf_sublib = os.path.join(repodir, 'fendl-endf/general-purpose/neutron')
     info = get_endf_info(os.path.join(endf_sublib, fname))
-    process_fendl_endf(info, repodir, njoyexe)
+    process_fendl_endf(info, repodir, njoyexe, njoylib)
     return
 
 
-def process_fendl_neutron_lib(repodir, njoyexe):
+def process_fendl_neutron_lib(repodir, njoyexe, njoylib):
     """Process all neutron ENDF files in FENDL library."""
     endf_sublib = os.path.join(repodir, 'fendl-endf/general-purpose/neutron')
     endf_files = os.listdir(endf_sublib)
     for cur_endf_file in endf_files:
-        process_fendl_file(cur_endf_file, repodir, njoyexe)
+        process_fendl_file(cur_endf_file, repodir, njoyexe, njoylib)
     return
 
 

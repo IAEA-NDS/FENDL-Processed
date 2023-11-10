@@ -2,7 +2,7 @@
 #
 # Author:       Georg Schnabel
 # Email:        g.schnabel@iaea.org
-# Date:         2022/02/06
+# Date:         2023/11/09
 # Institution:  IAEA
 #
 # This script is a driver for NJOY2016 to
@@ -13,13 +13,16 @@
 #     Run from the root directory of the
 #     FENDL-processed directory:
 #
-#     python process-fendl.py
+#     python process-fendl.py <sublib>
+#
+#     <sublib> can be: neutron, proton, deuteron, all
 #
 ############################################################
 
 import sys
 from process_fendl_neutron import process_fendl_neutron_lib
 from process_fendl_proton import process_fendl_proton_lib
+from process_fendl_deuteron import process_fendl_deuteron_lib
 
 
 if len(sys.argv) != 2:
@@ -36,3 +39,7 @@ if library_type in ('neutron', 'all'):
 if library_type in ('proton', 'all'):
     print('--- processing proton ENDF files ---')
     process_fendl_proton_lib('.', njoyexe, njoylib)
+
+if library_type in ('deuteron', 'all'):
+    print('--- processing deuteron ENDF files ---')
+    process_fendl_deuteron_lib('.', njoyexe, njoylib)

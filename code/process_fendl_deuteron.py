@@ -7,13 +7,13 @@
 #
 # This script is a driver for NJOY2016 to
 # produce the processed files of the FENDL
-# proton sublibrary.
+# deuteron sublibrary.
 #
 # Usage:
 #     Run from the root directory of the
 #     FENDL-processed directory:
 #
-#     python process-fendl-proton.py
+#     python process-fendl-deuteron.py
 #
 ############################################################
 
@@ -47,7 +47,7 @@ def filehash(fname):
 def run_fendl_njoy(pardic):
     """Invoke NJOY for ENDF files in FENDL library."""
     tmpdir = tempfile.TemporaryDirectory()
-    shutil.copy(pardic['p_endf'], os.path.join(tmpdir.name, 'tape20'))
+    shutil.copy(pardic['d_endf'], os.path.join(tmpdir.name, 'tape20'))
     shutil.copy(pardic['njoyinp'], os.path.join(tmpdir.name, 'input'))
 
     njoyinp = open(os.path.join(tmpdir.name, 'input'))
@@ -95,9 +95,9 @@ def get_endf_info(fpath):
 
 def determine_fendl_paths(info, repodir, njoyexe, njoylib):
     """Return dictionary with paths to FENDL paths (ace, plots, etc.)."""
-    if info['incpart'] != 'p':
-        raise ValueError('The info dic should be for incident protons')
-    p_endf_file = '%s_%04d_%d-%s-%s%s.endf' % (info['incpart'], info['matnr'],
+    if info['incpart'] != 'd':
+        raise ValueError('The info dic should be for incident deuterons')
+    d_endf_file = '%s_%04d_%d-%s-%s%s.endf' % (info['incpart'], info['matnr'],
                                            info['charge'], info['symb'],
                                            info['mass'], info['meta'])
     padsymb = ('%-2s' % info['symb']).replace(' ','_')
@@ -109,14 +109,14 @@ def determine_fendl_paths(info, repodir, njoyexe, njoylib):
     aceplot_pdffile = ace_file + '_ace.pdf'
     track_file = ace_file + '.json'
     fendl_paths = {
-        'p_endf': os.path.join(repodir, 'fendl-endf/general-purpose/proton', p_endf_file),
-        'ace': os.path.join(repodir, 'general-purpose/proton/ace', ace_file),
-        'xsd': os.path.join(repodir, 'general-purpose/proton/ace', xsd_file),
-        'aceplot': os.path.join(repodir, 'general-purpose/proton/plot', aceplot_file),
-        'aceplotpdf': os.path.join(repodir, 'general-purpose/proton/plot', aceplot_pdffile),
-        'njoyinp': os.path.join(repodir, 'general-purpose/proton/njoy', njoyinp_file),
-        'njoyout': os.path.join(repodir, 'general-purpose/proton/njoy', njoyout_file),
-        'track': os.path.join(repodir, 'trackdb/trackdb_proton', track_file),
+        'd_endf': os.path.join(repodir, 'fendl-endf/general-purpose/deuteron', d_endf_file),
+        'ace': os.path.join(repodir, 'general-purpose/deuteron/ace', ace_file),
+        'xsd': os.path.join(repodir, 'general-purpose/deuteron/ace', xsd_file),
+        'aceplot': os.path.join(repodir, 'general-purpose/deuteron/plot', aceplot_file),
+        'aceplotpdf': os.path.join(repodir, 'general-purpose/deuteron/plot', aceplot_pdffile),
+        'njoyinp': os.path.join(repodir, 'general-purpose/deuteron/njoy', njoyinp_file),
+        'njoyout': os.path.join(repodir, 'general-purpose/deuteron/njoy', njoyout_file),
+        'track': os.path.join(repodir, 'trackdb/trackdb_deuteron', track_file),
         'njoyexe': njoyexe,
         'njoylib': njoylib
     }
@@ -130,8 +130,8 @@ def check_input_files_available(fendl_paths):
         raise FileNotFoundError('NJOY2016 library was not found at the specified path: ' + fendl_paths['njoylib'])
     if not os.path.isfile(fendl_paths['njoyinp']):
         raise FileNotFoundError('NJOY2016 input file is missing: ' + fendl_paths['njoyinp'])
-    if not os.path.isfile(fendl_paths['p_endf']):
-        raise FileNotFoundError('proton endf file is missing: ' + fendl_paths['p_endf'])
+    if not os.path.isfile(fendl_paths['d_endf']):
+        raise FileNotFoundError('deuteron endf file is missing: ' + fendl_paths['d_endf'])
     return
 
 
@@ -148,19 +148,19 @@ def should_reprocess(info, repodir, njoyexe, njoylib):
     curhashes = {k: filehash(f) for k,f in fendl_paths.items()}
     for k in curhashes:
         if curhashes[k] != storedhashes[k]:
-            if k not in ('p_endf', 'njoyinp'):
+            if k not in ('d_endf', 'njoyinp'):
                 raise ValueError('Hashes of output files do not match those in trackdb')
             return True
     return False
 
 
 def process_fendl_endf(info, repodir, njoyexe, njoylib):
-    """Process one proton ENDF file in FENDL library."""
+    """Process one deuteron ENDF file in FENDL library."""
     fendl_paths = determine_fendl_paths(info, repodir, njoyexe, njoylib)
     check_input_files_available(fendl_paths)
     if should_reprocess(info, repodir, njoyexe, njoylib):
         for k in fendl_paths:
-            if k in ('p_endf', 'njoyinp', 'njoyexe', 'njoylib'):
+            if k in ('d_endf', 'njoyinp', 'njoyexe', 'njoylib'):
                 continue  # we do not delete input files!
             if os.path.isfile(fendl_paths[k]) or os.path.islink(fendl_paths[k]):
                 os.unlink(fendl_paths[k])
@@ -173,15 +173,15 @@ def process_fendl_endf(info, repodir, njoyexe, njoylib):
 
 
 def process_fendl_file(fname, repodir, njoyexe, njoylib):
-    endf_sublib = os.path.join(repodir, 'fendl-endf/general-purpose/proton')
+    endf_sublib = os.path.join(repodir, 'fendl-endf/general-purpose/deuteron')
     info = get_endf_info(os.path.join(endf_sublib, fname))
     process_fendl_endf(info, repodir, njoyexe, njoylib)
     return
 
 
-def process_fendl_proton_lib(repodir, njoyexe, njoylib):
-    """Process all proton ENDF files in FENDL library."""
-    endf_sublib = os.path.join(repodir, 'fendl-endf/general-purpose/proton')
+def process_fendl_deuteron_lib(repodir, njoyexe, njoylib):
+    """Process all deuteron ENDF files in FENDL library."""
+    endf_sublib = os.path.join(repodir, 'fendl-endf/general-purpose/deuteron')
     endf_files = os.listdir(endf_sublib)
     for cur_endf_file in endf_files:
         process_fendl_file(cur_endf_file, repodir, njoyexe, njoylib)
@@ -190,4 +190,4 @@ def process_fendl_proton_lib(repodir, njoyexe, njoylib):
 
 if __name__ == '__main__':
 
-    process_fendl_proton_lib('.', '/opt/NJOY2016/bin/njoy')
+    process_fendl_deuteron_lib('.', '/opt/NJOY2016/bin/njoy')
