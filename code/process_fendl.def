@@ -20,8 +20,8 @@ From: ubuntu:22.04
     cd /opt &&
     git clone https://github.com/IAEA-NDS/NJOY2016.git &&
     cd NJOY2016 &&
-    # checkout NJOY2016.72 including packages provided by IAEA-NDS
-    git checkout 078f3ab033ed15340ec0c2ab1e2343e3a08d545c &&
+    # checkout NJOY2016.73 including packages provided by IAEA-NDS
+    git checkout 00faf54b4202059bccd74c2ebca44e6fb9120781 &&
     mkdir bin && cd bin &&
     cmake -D CMAKE_BUILD_TYPE=Release .. &&
     make &&
