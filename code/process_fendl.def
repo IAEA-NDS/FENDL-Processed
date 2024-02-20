@@ -17,7 +17,7 @@ From: ubuntu:22.04
     apt install -y cmake=3.22.1-1ubuntu1.22.04.1 &&
     apt install -y gfortran=4:11.2.0-1ubuntu1 &&
     apt install -y python-is-python3=3.9.2-2 &&
-    apt install -y ghostscript=9.55.0~dfsg1-0ubuntu5.5 &&
+    apt install -y ghostscript=9.55.0~dfsg1-0ubuntu5.6 &&
     cd /opt &&
     git clone https://github.com/IAEA-NDS/NJOY2016.git &&
     cd NJOY2016 &&
