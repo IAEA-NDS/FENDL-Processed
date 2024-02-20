@@ -4,6 +4,7 @@ From: ubuntu:22.04
 %files
 
     process_fendl.py /opt/process_fendl.py
+    process_fendl_base.py /opt/process_fendl_base.py
     process_fendl_neutron.py /opt/process_fendl_neutron.py
     process_fendl_proton.py /opt/process_fendl_proton.py
     process_fendl_deuteron.py /opt/process_fendl_deuteron.py
