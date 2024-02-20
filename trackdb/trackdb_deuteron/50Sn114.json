@@ -1,0 +1,15 @@
+{
+    "inputs": {
+        "d_endf": "be7fb33ee7d3b086d9de381627f5ec5a86f2a6c948de2a4a240268627dcabc29",
+        "njoyinp": "6b3f232add7b7bf72a92d65c72fa51a79162acc56b51185b91d3d49969dd123f",
+        "njoyexe": "d24924bdd82406bb6b7c34794e5fc333a8322e58f782460198702b77d0dbc528",
+        "njoylib": "192766e06218f13d6eec86263721e7e4a053543eb1a551bde27f42cab041efca"
+    },
+    "outputs": {
+        "ace": "06587296a53ab713024cc7348da7999e1a3d2f63b50b3108da8f9cc32764c3b9",
+        "xsd": "c7ea19e383854052c3a79158a154f692e890cf758de80251ff1116a2c9768691",
+        "aceplot": "72127c493c1ef594d89f51c26e3324f969fcc983ccbf3bc38254c3b8234b0412",
+        "aceplotpdf": "554bb512a37b903268c0c304e70c6165a8fa716fe5baa5b2dffd5c816bb57120",
+        "njoyout": "ba9bbf24d18cec6bcb49c2c1334fd7f8dc92e8c1848a40bbebada603bf43d24c"
+    }
+}
