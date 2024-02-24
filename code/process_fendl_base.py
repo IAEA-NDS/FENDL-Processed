@@ -14,6 +14,7 @@ from njoy_input_manipulation import (
     set_reconr_comments2,
     set_moder_comment
 )
+from pdf_manipulation import remove_metadata_from_pdf
 sys.path.append(os.path.join(os.path.dirname(__file__), os.pardir))
 from config import CREATION_DATE, FENDL_VERSION
 
@@ -169,6 +170,10 @@ def process_fendl_endf(run_fendl_njoy, fendl_paths, njoyvers, fendlvers, cdate):
                 os.unlink(curpath)
         trackfile = fendl_paths['trackfile']
         run_fendl_njoy(fendl_paths)
+        # specify dates and remove metadata of pdfs for reproducibility
+        for p in fendl_paths['outputs'].values():
+            if p.endswith('.pdf'):
+                remove_metadata_from_pdf(p, cdate)
         curhashes_inputs = {k: filehash(f) for k, f in fendl_paths['inputs'].items()}
         curhashes_outputs = {k: filehash(f) for k, f in fendl_paths['outputs'].items()}
         curhashes = {'inputs': curhashes_inputs, 'outputs': curhashes_outputs}
