@@ -14,6 +14,8 @@ from njoy_input_manipulation import (
     set_reconr_comments2,
     set_moder_comment,
     set_acefile_date,
+    zero_njoy_outfile_durations,
+    set_njoy_outfile_date
 )
 from pdf_manipulation import remove_metadata_from_pdf
 sys.path.append(os.path.join(os.path.dirname(__file__), os.pardir))
@@ -177,6 +179,10 @@ def process_fendl_endf(run_fendl_njoy, fendl_paths, njoyvers, fendlvers, cdate):
                 remove_metadata_from_pdf(p, cdate)
         ace_file = fendl_paths['outputs']['ace']
         set_acefile_date(ace_file, cdate)
+        njoy_outfile = fendl_paths['outputs']['njoyout']
+        set_njoy_outfile_date(njoy_outfile, cdate)
+        zero_njoy_outfile_durations(njoy_outfile)
+        # record checksums
         curhashes_inputs = {k: filehash(f) for k, f in fendl_paths['inputs'].items()}
         curhashes_outputs = {k: filehash(f) for k, f in fendl_paths['outputs'].items()}
         curhashes = {'inputs': curhashes_inputs, 'outputs': curhashes_outputs}
