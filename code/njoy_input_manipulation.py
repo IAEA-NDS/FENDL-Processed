@@ -228,3 +228,26 @@ def set_m_long_comments(lines, comments):
     lines[idx] = f"'{comments[0]}'/"
     lines[idx+1] = f"'{comments[1]}'/"
     lines[idx+2] = f"'{comments[2]}'/"
+
+
+def get_acefile_date(filename):
+    with open(filename, 'r') as f:
+        lines = f.readlines(512)
+    datestr = lines[0][37:45]
+    if not re.match('^[0-9]{2}/[0-9]{2}/[0-9]{2}$', datestr):
+        raise ValueError(f'unknown date format {datestr}')
+    return datestr
+
+
+def set_acefile_date(filename, datetime_obj):
+    with open(filename, 'rb') as f:
+        data = f.read()
+    old_datestr = data[37:45]
+    if not re.match(b'^[0-9]{2}/[0-9]{2}/[0-9]{2}$', old_datestr):
+        raise ValueError(f'unknown date format {datestr}')
+    datestr = datetime_obj.strftime('%m/%d/%y').encode()
+    if len(old_datestr) != len(datestr):
+        raise ValueError('old and new date of different length')
+    new_data = data[:37] + datestr + data[45:]
+    with open(filename, 'wb') as f:
+        f.write(new_data)
