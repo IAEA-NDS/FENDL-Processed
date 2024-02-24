@@ -3,7 +3,7 @@ import json
 import hashlib
 import re
 import sys
-from njoy_input_manipulation import (
+from njoy_file_manipulation import (
     set_ace_comment,
     set_g_comment,
     set_gam_comment,
