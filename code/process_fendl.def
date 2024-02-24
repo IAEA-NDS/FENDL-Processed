@@ -10,14 +10,24 @@ From: ubuntu:22.04
     process_fendl_deuteron.py /opt/process_fendl_deuteron.py
     construct_xsd_file.py /opt/construct_xsd_file.py
 
+
+%environment
+
+    export LANG=C
+    export LC_ALL=C
+
+
 %post
 
     apt update &&
     apt install -y git=1:2.34.1-1ubuntu1.10 &&
-    apt install -y cmake=3.22.1-1ubuntu1.22.04.1 &&
+    apt install -y cmake=3.22.1-1ubuntu1.22.04.2 &&
     apt install -y gfortran=4:11.2.0-1ubuntu1 &&
     apt install -y python-is-python3=3.9.2-2 &&
     apt install -y ghostscript=9.55.0~dfsg1-0ubuntu5.6 &&
+    apt install -y exiftool &&
+    apt install -y qpdf &&
+    apt install -y locales &&
     cd /opt &&
     git clone https://github.com/IAEA-NDS/NJOY2016.git &&
     cd NJOY2016 &&
