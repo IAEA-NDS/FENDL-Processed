@@ -73,7 +73,7 @@ def update_njoy_inputfile(njoyinp, njoyvers, fendlvers, cdate):
     ]
     set_reconr_comments1(lines, reconr_comments1)
     set_ace_comment(lines, comment)
-    if particle == 'n':
+    if particle == 'neutron':
         set_g_comment(lines, comment)
         set_gam_comment(lines, comment)
         m_comment = (' '*8 + sym.lower() + mass).ljust(16)
