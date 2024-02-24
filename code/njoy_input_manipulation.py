@@ -230,6 +230,45 @@ def set_m_long_comments(lines, comments):
     lines[idx+2] = f"'{comments[2]}'/"
 
 
+def set_njoy_outfile_date(filename, datetime_obj):
+    with open(filename, 'r') as f:
+        lines = f.readlines()
+    datestr1 = lines[6][61:67]
+    datestr2 = lines[6][67:75]
+    if datestr1 != 'date: ':
+        raise ValueError('date signature not matching')
+    if not re.match('^[0-9]{2}/[0-9]{2}/[0-9]{2}$', datestr2):
+        raise ValueError(f'unknown date format {datestr2}')
+    timestr1 = lines[7][61:67]
+    timestr2 = lines[7][67:75]
+    if timestr1 != 'time: ':
+        raise ValueError('date signature not matching')
+    if not re.match('^[0-9]{2}:[0-9]{2}:[0-9]{2}$', timestr2):
+        raise ValueError(f'unknown time format {timestr2}')
+    datestr = datetime_obj.strftime('%m/%d/%y')
+    timestr = datetime_obj.strftime('%H:%M:%S')
+    lines[6] = lines[6][:67] + datestr + lines[6][75:]
+    lines[7] = lines[7][:67] + timestr + lines[7][75:]
+    with open(filename, 'w') as f:
+        f.writelines(lines)
+
+
+def zero_njoy_outfile_durations(filename):
+    with open(filename, 'r') as f:
+        lines = f.readlines()
+    rex = re.compile('[0-9]{1,4}\.[0-9]s$')
+    for i in range(len(lines)):
+        line = lines[i]
+        m = rex.search(line)
+        if m:
+            line = line[:m.start()]
+            line = line.ljust(m.end())
+            line = line[:-4] + '0.0s\n'
+            lines[i] = line
+    with open(filename, 'w') as f:
+        f.writelines(lines)
+
+
 def get_acefile_date(filename):
     with open(filename, 'r') as f:
         lines = f.readlines(512)
