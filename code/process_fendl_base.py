@@ -38,7 +38,7 @@ def get_njoy_version(njoy_path):
         m = re.search(r"public::vers='(.*)'", line)
         if m:
             njoy_version = m.group(1).strip()
-            return njoy_version
+            return njoy_version + 'NDS'
     raise ValueError('unable to determine NJOY version')
 
 
