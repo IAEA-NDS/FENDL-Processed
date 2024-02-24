@@ -3,6 +3,17 @@ import json
 import hashlib
 import re
 import sys
+from njoy_input_manipulation import (
+    set_ace_comment,
+    set_g_comment,
+    set_gam_comment,
+    set_m_comment,
+    get_m_long_comments,
+    set_m_long_comments,
+    set_reconr_comments1,
+    set_reconr_comments2,
+    set_moder_comment
+)
 sys.path.append(os.path.join(os.path.dirname(__file__), os.pardir))
 from config import CREATION_DATE, FENDL_VERSION
 
@@ -27,11 +38,54 @@ def get_njoy_version(njoy_path):
     raise ValueError('unable to determine NJOY version')
 
 
-def update_njoy_version_in_njoy_inputfile(njoyinp, njoyvers):
+def extract_isotope_info(njoyinp):
+    m = re.match(r'([0-9]+)([a-zA-Z]+)_?([0-9]+m?)', njoyinp)
+    if not m:
+        raise ValueError('regular expression did not match')
+    charge = m.group(1)
+    sym = m.group(2).title()
+    mass = m.group(3).lstrip('0')
+    return charge, sym, mass
+
+
+def update_njoy_inputfile(njoyinp, njoyvers, fendlvers, cdate):
     with open(njoyinp, 'r') as fin:
         lines = fin.readlines()
-    lines = [re.sub('NJOY[0-9+.]+', f'NJOY{njoyvers}', ln) for ln in lines]
+    lines = [s.rstrip('\n') for s in lines]
+    njoyinp_basename = os.path.basename(njoyinp)
+    osd = os.path.dirname
+    particle = os.path.basename(osd(osd(njoyinp)))
+    if particle not in ('neutron', 'proton', 'deuteron'):
+        raise ValueError('first letter of nji filename must be n,p or d')
+    charge, sym, mass = extract_isotope_info(njoyinp_basename)
+    fullsym = f"{charge}-{sym}-{mass}"
+    comment = f"{fullsym} {fendlvers} (NJOY{njoyvers})"
+    moder_comment = f"{fullsym} {fendlvers}"
+    set_moder_comment(lines, moder_comment)
+    reconr_comments1 = [
+        f"PENDF for {fullsym}",
+        f"{fullsym} {fendlvers}",
+        f"Processed by NJOY{njoyvers}"
+    ]
+    set_reconr_comments1(lines, reconr_comments1)
+    set_ace_comment(lines, comment)
+    if particle == 'n':
+        set_g_comment(lines, comment)
+        set_gam_comment(lines, comment)
+        m_comment = (' '*8 + sym.lower() + mass).ljust(16)
+        set_m_comment(lines, m_comment)
+        long_m_comments = get_m_long_comments(lines)
+        long_m_comments[0] = f"{fullsym} {fendlvers}"
+        long_m_comments[2] = f"Processed by NJOY{njoyvers}"
+        set_m_long_comments(lines, long_m_comments)
+        reconr_comments2 = [
+            f"PENDF photo-atomic data for {fullsym}",
+            f"{fullsym} {fendlvers}",
+            f"Processed by NJOY{njoyvers}"
+        ]
+        set_reconr_comments2(lines, reconr_comments1)
     os.unlink(njoyinp)
+    lines = [s + '\n' for s in lines]
     with open(njoyinp, 'w') as fout:
         fout.writelines(lines)
 
@@ -108,7 +162,7 @@ def process_fendl_endf(run_fendl_njoy, fendl_paths, njoyvers, fendlvers, cdate):
     """Process one neutron ENDF file in FENDL library."""
     check_input_files_available(fendl_paths)
     njoyinp = fendl_paths['inputs']['njoyinp']
-    update_njoy_version_in_njoy_inputfile(njoyinp, njoyvers)
+    update_njoy_inputfile(njoyinp, njoyvers, fendlvers, cdate)
     if should_reprocess(fendl_paths):
         for k, curpath in fendl_paths['outputs'].items():
             if os.path.isfile(curpath) or os.path.islink(curpath):
