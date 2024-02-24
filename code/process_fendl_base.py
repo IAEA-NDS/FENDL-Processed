@@ -2,6 +2,17 @@ import os
 import json
 import hashlib
 import re
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), os.pardir))
+from config import CREATION_DATE, FENDL_VERSION
+
+
+def get_fendl_version():
+    return FENDL_VERSION
+
+
+def get_creation_date():
+    return CREATION_DATE
 
 
 def get_njoy_version(njoy_path):
@@ -93,7 +104,7 @@ def should_reprocess(fendl_paths):
     return False
 
 
-def process_fendl_endf(run_fendl_njoy, fendl_paths, njoyvers):
+def process_fendl_endf(run_fendl_njoy, fendl_paths, njoyvers, fendlvers, cdate):
     """Process one neutron ENDF file in FENDL library."""
     check_input_files_available(fendl_paths)
     njoyinp = fendl_paths['inputs']['njoyinp']
@@ -114,7 +125,7 @@ def process_fendl_endf(run_fendl_njoy, fendl_paths, njoyvers):
 
 def process_fendl_sublib(
     repodir, sublib_path, run_njoy, determine_fendl_paths,
-    njoyexe, njoylib, njoyvers, endf_file=None
+    njoyexe, njoylib, njoyvers, fendlvers, cdate, endf_file=None
 ):
     endf_sublib = os.path.join(repodir, sublib_path)
     endf_files = os.listdir(endf_sublib)
@@ -124,4 +135,4 @@ def process_fendl_sublib(
         fendl_endf_file = os.path.join(endf_sublib, cur_endf_file)
         info = get_endf_info(fendl_endf_file)
         fendl_paths = determine_fendl_paths(info, repodir, njoyexe, njoylib)
-        process_fendl_endf(run_njoy, fendl_paths, njoyvers)
+        process_fendl_endf(run_njoy, fendl_paths, njoyvers, fendlvers, cdate)

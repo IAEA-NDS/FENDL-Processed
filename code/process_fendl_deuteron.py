@@ -23,7 +23,12 @@ import shutil
 import os
 
 from construct_xsd_file import write_xsd_file
-from process_fendl_base import process_fendl_sublib, get_njoy_version
+from process_fendl_base import (
+    process_fendl_sublib,
+    get_njoy_version,
+    get_fendl_version,
+    get_creation_date
+)
 
 
 def run_fendl_njoy(pardic):
@@ -84,14 +89,18 @@ def determine_fendl_paths(info, repodir, njoyexe, njoylib):
     return fendl_paths
 
 
-def process_fendl_deuteron_lib(repodir, njoyexe, njoylib, njoyvers, endf_file=None):
+def process_fendl_deuteron_lib(
+    repodir, njoyexe, njoylib, njoyvers, fendlvers, cdate, endf_file=None
+):
     """Process all deuteron ENDF files in FENDL library."""
     endf_sublib = os.path.join('fendl-endf', 'general-purpose/deuteron')
     process_fendl_sublib(repodir, endf_sublib, run_fendl_njoy,
-                         determine_fendl_paths, njoyexe, njoylib, njoyvers,
-                         endf_file=endf_file)
+                         determine_fendl_paths, njoyexe, njoylib,
+                         njoyvers, fendlvers, cdate, endf_file=endf_file)
 
 
 if __name__ == '__main__':
     njoyvers = get_njoy_version('/opt/NJOY2016')
-    process_fendl_deuteron_lib('.', '/opt/NJOY2016/bin/njoy', njoyvers)
+    fendlvers = get_fendl_version()
+    cdate = get_creation_date()
+    process_fendl_deuteron_lib('.', '/opt/NJOY2016/bin/njoy', njoyvers, fendlvers, cdate)
