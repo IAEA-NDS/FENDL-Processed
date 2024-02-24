@@ -84,11 +84,12 @@ def determine_fendl_paths(info, repodir, njoyexe, njoylib):
     return fendl_paths
 
 
-def process_fendl_deuteron_lib(repodir, njoyexe, njoylib, njoyvers):
+def process_fendl_deuteron_lib(repodir, njoyexe, njoylib, njoyvers, endf_file=None):
     """Process all deuteron ENDF files in FENDL library."""
     endf_sublib = os.path.join('fendl-endf', 'general-purpose/deuteron')
     process_fendl_sublib(repodir, endf_sublib, run_fendl_njoy,
-                         determine_fendl_paths, njoyexe, njoylib, njoyvers)
+                         determine_fendl_paths, njoyexe, njoylib, njoyvers,
+                         endf_file=endf_file)
 
 
 if __name__ == '__main__':

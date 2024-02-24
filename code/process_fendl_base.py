@@ -114,11 +114,13 @@ def process_fendl_endf(run_fendl_njoy, fendl_paths, njoyvers):
 
 def process_fendl_sublib(
     repodir, sublib_path, run_njoy, determine_fendl_paths,
-    njoyexe, njoylib, njoyvers
+    njoyexe, njoylib, njoyvers, endf_file=None
 ):
     endf_sublib = os.path.join(repodir, sublib_path)
     endf_files = os.listdir(endf_sublib)
     for cur_endf_file in endf_files:
+        if endf_file is not None and endf_file != cur_endf_file:
+            continue
         fendl_endf_file = os.path.join(endf_sublib, cur_endf_file)
         info = get_endf_info(fendl_endf_file)
         fendl_paths = determine_fendl_paths(info, repodir, njoyexe, njoylib)
