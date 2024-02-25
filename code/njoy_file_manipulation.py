@@ -249,6 +249,19 @@ def set_njoy_outfile_date(filename, datetime_obj):
     timestr = datetime_obj.strftime('%H:%M:%S')
     lines[6] = lines[6][:67] + datestr + lines[6][75:]
     lines[7] = lines[7][:67] + timestr + lines[7][75:]
+    # there is another occurrence of the date
+    rex = re.compile('^ {20} *date  [0-9]{2}/[0-9]{2}/[0-9]{2} *$')
+    line_idx = None
+    for i in range(len(lines)):
+        if rex.match(lines[i]):
+            line_idx = i
+            break
+    if line_idx is None:
+        raise IndexError('second date string not found')
+    line = lines[line_idx]
+    start_idx = line.index('date') + len('date  ')
+    line = line[:start_idx] + datestr + line[start_idx+8:]
+    lines[line_idx] = line
     with open(filename, 'w') as f:
         f.writelines(lines)
 
