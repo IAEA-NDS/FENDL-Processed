@@ -186,6 +186,8 @@ def process_fendl_endf(run_fendl_njoy, fendl_paths, njoyvers, fendlvers, cdate):
         curhashes_inputs = {k: filehash(f) for k, f in fendl_paths['inputs'].items()}
         curhashes_outputs = {k: filehash(f) for k, f in fendl_paths['outputs'].items()}
         curhashes = {'inputs': curhashes_inputs, 'outputs': curhashes_outputs}
+        trackfile_dirname = os.path.dirname(trackfile)
+        os.makedirs(trackfile_dirname, exist_ok=True)
         with open(trackfile, 'w') as outf:
             json.dump(curhashes, outf, indent=4)
     return
