@@ -1,17 +1,6 @@
 Bootstrap: docker
 From: ubuntu:22.04
 
-%files
-
-    process_fendl.py /opt/process_fendl.py
-    process_fendl_base.py /opt/process_fendl_base.py
-    process_fendl_neutron.py /opt/process_fendl_neutron.py
-    process_fendl_proton.py /opt/process_fendl_proton.py
-    process_fendl_deuteron.py /opt/process_fendl_deuteron.py
-    construct_xsd_file.py /opt/construct_xsd_file.py
-    njoy_file_manipulation.py /opt/njoy_file_manipulation.py
-    pdf_manipulation.py /opt/pdf_manipulation.py
-
 
 %environment
 
@@ -43,4 +32,4 @@ From: ubuntu:22.04
 
 %runscript
 
-    exec python /opt/process_fendl.py "$@"
+    exec python code/process_fendl.py "$@"
