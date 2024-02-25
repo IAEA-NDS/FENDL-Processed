@@ -73,6 +73,7 @@ def determine_fendl_paths(info, repodir, njoyexe, njoylib):
     track_file = ace_file + '.json'
     fendl_paths = {}
     fendl_paths['inputs'] = {
+        'config': os.path.join(repodir, 'config.py'),
         'p_endf': os.path.join(repodir, 'fendl-endf/general-purpose/proton', p_endf_file),
         'njoyinp': os.path.join(repodir, 'general-purpose/proton/njoy', njoyinp_file),
         'njoyexe': njoyexe,
