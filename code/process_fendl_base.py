@@ -22,6 +22,20 @@ sys.path.append(os.path.join(os.path.dirname(__file__), os.pardir))
 from config import CREATION_DATE, FENDL_VERSION
 
 
+def lock_file(filename):
+    lockname = filename + '.lock'
+    os.mkdir(lockname)
+
+
+def unlock_file(filename):
+    lockname = filename + '.lock'
+    os.rmdir(lockname)
+
+
+def is_lockfile(filename):
+    return filename.endswith('.lock')
+
+
 def get_fendl_version():
     return FENDL_VERSION
 
@@ -199,10 +213,24 @@ def process_fendl_sublib(
 ):
     endf_sublib = os.path.join(repodir, sublib_path)
     endf_files = os.listdir(endf_sublib)
+    endf_files = [f for f in endf_files if not is_lockfile(f)]
+    lock_fails = 0
     for cur_endf_file in endf_files:
         if endf_file is not None and endf_file != cur_endf_file:
             continue
-        fendl_endf_file = os.path.join(endf_sublib, cur_endf_file)
-        info = get_endf_info(fendl_endf_file)
-        fendl_paths = determine_fendl_paths(info, repodir, njoyexe, njoylib)
-        process_fendl_endf(run_njoy, fendl_paths, njoyvers, fendlvers, cdate)
+        try:
+            fendl_endf_file = os.path.join(endf_sublib, cur_endf_file)
+            lock_file(fendl_endf_file)
+            info = get_endf_info(fendl_endf_file)
+            fendl_paths = determine_fendl_paths(info, repodir, njoyexe, njoylib)
+            process_fendl_endf(run_njoy, fendl_paths, njoyvers, fendlvers, cdate)
+            unlock_file(fendl_endf_file)
+        except FileExistsError:
+            lock_fails += 1
+            continue
+        except Exception as exc:
+            unlock_file(fendl_endf_file)
+            raise exc
+
+    if lock_fails > 0:
+        print(f'\n\nWARNING: skipped {lock_fails} files because locking failed')
