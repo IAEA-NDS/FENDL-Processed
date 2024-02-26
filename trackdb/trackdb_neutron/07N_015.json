@@ -1,21 +1,22 @@
 {
     "inputs": {
+        "config": "dc387eaedfa3e2e540e6e571746a315d5b9f8697165984c9f8a0bfb14c3a7cfa",
         "n_endf": "15ac5733caa6a251065c9252001ea2285953a7db59bd0b07df364399be19c299",
         "ph_endf": "058b2c10896f17aa2fd9b708a1295eb2754982e0435ba955af527e13b594b3e7",
-        "njoyinp": "b69a6d91b53aaea94cd79cdc765614ce234379a4751c3458b5e88f02ab0d03b0",
+        "njoyinp": "1324b525a3523ddd5472a8ef341f678a9c710df974d788ec978690a171d491e2",
         "njoyexe": "d24924bdd82406bb6b7c34794e5fc333a8322e58f782460198702b77d0dbc528",
-        "njoylib": "192766e06218f13d6eec86263721e7e4a053543eb1a551bde27f42cab041efca"
+        "njoylib": "ba72f560e7fd87429001b6d63c280c5f77e130fcfcfb48a7f974c1607094c166"
     },
     "outputs": {
-        "gam": "c2a4fbfa3720f4a81dd1707a17c81b97de3a5c98bc3cb19ef2972859155d724a",
-        "g": "05847ceea79b1f0abf520865ee6f079051130de195629793bd293333638ab426",
-        "m": "525e2a462ecfd8647d9d6a5898b735cbe5e7ee84310caf1bc262e40fe4e893e2",
-        "ace": "53ae7b527573ff1a003c3192c5e0dc72067cb6a3a2dd2bf8907731db86cc8d7e",
+        "gam": "eb112428c73fb8b49c880505be6dbe701a2a4526ced06b1fed903fcf824a46e8",
+        "g": "1f6a69cd4a07f0d754a600b043bfe790ac0e2c7fbef2530e799a0088225041d6",
+        "m": "79327fd46109f907c85391dd687dbf0815cdaa6be429f1c27d7b65332f291556",
+        "ace": "c33c25d41df2bcad7294fe280dba56f07985c6735864dae1ba32bdb500b941d5",
         "xsd": "841441119d7e6adcb0eec22cfc291d72c3abaf6a7034e102992c06ed6635d202",
-        "aceplot": "5d463e03cd2178bfcabaccb4e2b9055bd8b77804babefc041a56e7927312cc67",
-        "aceplotpdf": "6c1ddffecb1548e548fc12dc2b1b185a294c4f4b1a43141bd8c3e4fecdf4b076",
+        "aceplot": "4bb77365bea5301821b731b1ff8009be57008a0d9ae96aba5a7e45f15ef794eb",
+        "aceplotpdf": "43b6ffd39988cea4b50d1f607c7a282f3a84a09c9950efc7109cb5853eb1b2f2",
         "htrplot": "8e1933b65ab9a89f9ef2dae8458dfeb9af7a785f0ca4b9bef8b49d7d9e6d4c00",
-        "htrplotpdf": "6fd64f28edf5ef8ebddc39aa11ce9ff919cf1679dd1977ec9d508bcb327148ae",
-        "njoyout": "9b75162741bfb46a0a77cce3cb7ad05ff9dea3dd46abc2433ba4ebe02a6ea339"
+        "htrplotpdf": "647157257c5c961475c868a73e3cbf5accd710e33c93f5123ef26a64e17d821b",
+        "njoyout": "adf5b792859224c832f27fd39d2e70761e4a425299acaf7bd758d89e9858d9a3"
     }
 }

@@ -1,15 +1,16 @@
 {
     "inputs": {
+        "config": "dc387eaedfa3e2e540e6e571746a315d5b9f8697165984c9f8a0bfb14c3a7cfa",
         "d_endf": "3dd3b9446000466ac85b411346f66be275063e35d2e2ccb3119052634d495798",
-        "njoyinp": "aa348162a226ebcc5a68e7e17a27b331760f8e9bd5cd058780f61b7bb54baa90",
+        "njoyinp": "e1de3bf5a0ddfdae7f0a8a409f8a450defa21cf26935c8bce46aaf203cd8b806",
         "njoyexe": "d24924bdd82406bb6b7c34794e5fc333a8322e58f782460198702b77d0dbc528",
-        "njoylib": "192766e06218f13d6eec86263721e7e4a053543eb1a551bde27f42cab041efca"
+        "njoylib": "ba72f560e7fd87429001b6d63c280c5f77e130fcfcfb48a7f974c1607094c166"
     },
     "outputs": {
-        "ace": "884dffa81fc8e168ad94bd23eba319ee3f54ec7f97323b51d0de705c05fa5389",
+        "ace": "a8ffe25d309eb59382b0a7f64e4e41939cb3d826d093db8bd3a896e323d4e522",
         "xsd": "330fd87556a9e86466257d39e1813df0e3ec9c9362297d911bc259b8dc3711d6",
-        "aceplot": "35f7e58415ac5eebab23aa4167178c0a8f1c5aab9e94feef632a630c4d63a3c3",
-        "aceplotpdf": "ba6e750dd47bdf81bec2345f3f69f3e483001fc4e0e18f0e3fa30ce3d9eac92a",
-        "njoyout": "cd61b5206f0446d505060f7f0a426871b0249ac2ac499157f9f12eda1cbf983d"
+        "aceplot": "2dc6320c1937ed35fd4fbde8b309e24b840adf068a66f360a830fffc79f1b4eb",
+        "aceplotpdf": "8a72332b4cdba7c5e116801ad2dd2bc635286db2893f83ca31a7d39e1b5f645b",
+        "njoyout": "39587d66d2bba6f152e7ba219de6e77012e2dd43382dcba95141c6f557f3453d"
     }
 }
