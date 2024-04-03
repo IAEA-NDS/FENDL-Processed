@@ -5,7 +5,7 @@
         "ph_endf": "b3fa79dcc38d6c6d796b86d549d9825df1c2c1604de05d4fb4338ef9622a324b",
         "njoyinp": "1c4a04fb09e7ae3bc4e207e3f47a03b32f39fe1cdfa3864bb3fabe19c0ae3ab2",
         "njoyexe": "d24924bdd82406bb6b7c34794e5fc333a8322e58f782460198702b77d0dbc528",
-        "njoylib": "ba72f560e7fd87429001b6d63c280c5f77e130fcfcfb48a7f974c1607094c166"
+        "njoylib": "a1f4f621fb9a7e0e3837c406905b94c1873a44fff2eaf203d858aba5c4f96d31"
     },
     "outputs": {
         "gam": "ae97b57b8d5803dddcef9696e3c066aa62aa948f440ef194aca770ae98bff18c",
@@ -17,6 +17,6 @@
         "aceplotpdf": "2a81b12112b1f0f691b94002f8dd52d74e7c0e394ce6907ac0a18efdcbd7c093",
         "htrplot": "42bebb55132c2bcc4fb1c25d60affbd1ac6253c1809033cc1867b111379f82fe",
         "htrplotpdf": "cb446cab9cd911e1e1c1d38941d9e2b2c0f51d4a49692f1541b98c8b1251eb85",
-        "njoyout": "75d059276b4077b47bee55d0c66184880d4eb02bf94f32479dc553bf0c59a428"
+        "njoyout": "75c6db6aa629c5d004bbeead037b6173e324b91a62bc0690b389afa8b5a0ca15"
     }
 }
