@@ -3,20 +3,20 @@
         "config": "dc387eaedfa3e2e540e6e571746a315d5b9f8697165984c9f8a0bfb14c3a7cfa",
         "n_endf": "6fef50981af7f24595128de7fb11ff65f337f1c92859609749cad52cff4dc3bd",
         "ph_endf": "019e1b713973bc411b2241116923cbe5febe3e9bc98524b6303bb7862d3a7c03",
-        "njoyinp": "07086cac8df83062fbb18c571cb62f952aa100496f148276ee0ff3d4b262f861",
-        "njoyexe": "d24924bdd82406bb6b7c34794e5fc333a8322e58f782460198702b77d0dbc528",
-        "njoylib": "cadb00b3fe9cb0eb047c1291feb182be5cb3723a5c361ea3de0d4bffbaebd0d1"
+        "njoyinp": "42d1c135164aaabb6bfa450685ed2e99587186c1cac77375d360dde3d9ead8d6",
+        "njoyexe": "0b21f268e018a90b321c8ff08f06dc9118f2d6a448513cbe5dbeda904281cecc",
+        "njoylib": "c7138aa954f3beac9b0f7611db0b33ba20515360ebf59e7b6c29b25b5b7ae5f2"
     },
     "outputs": {
         "gam": "6ab3bfaf95e315b7ba4bcfa8158bfc0b7b749c2a5ce60c2299ee9ce05fdc7cff",
-        "g": "a11c8bb84efe97b69d73f896f9aa312ad4b2eacb8788f0d950ad051ba6d7073d",
-        "m": "e4668de039c48d9774a9fc30eb21e009e619d37a8636510713dd7b2841116c90",
-        "ace": "f6f89bd121de9700cc21b416fb23027f9fd2c4589970a80ef3b67d36159f8fad",
+        "g": "161c20f9e04d69653e6bf3d7d2cf098654815f6054ce4a3431bfb1b4ff7641d9",
+        "m": "726e41f044d7626cb28fb6578be052890dc9c656892cd509b171cb1b4d556fe3",
+        "ace": "ad5df472e458ffed520476f51240eebe9b0c67a9613ea09b3935e06f8d7e5703",
         "xsd": "f24f4c994bf06cc354f542fddfa2b1a4b51d36c92a4f4aa472994c90d5f454d3",
-        "aceplot": "cc1841ec2a5225698fdde4899c4df8ba09e25268fbb5779067ca5ea73629d337",
-        "aceplotpdf": "8907decd4709235371fc55cf56d4a84ce430553f9e01305c6050969af1ed5dfc",
+        "aceplot": "3630ba10e847e204002d6f49c270858e20913879168a97f3a0e8c39c3c20c3ac",
+        "aceplotpdf": "2f7594ba26b3d884fb2c40a9cec4637f3b5caabfe56c65dbe91aff1b2235adc3",
         "htrplot": "22991d4596f6245f1b802ab11e7bcc18e43a405fc03aaf827b945bce26b35c90",
         "htrplotpdf": "7eab2e054d5351951fa486c5778e6f24465700909fb2200aae5a964230c56537",
-        "njoyout": "f8d031ee1995da6585f15916668e1211d7026a1e430eda97cbb0492ceaf54eef"
+        "njoyout": "f3a17fefd86ad3e5129f03111022d84fc00935e0766ff4bdf80a3e26b46bbc69"
     }
 }
