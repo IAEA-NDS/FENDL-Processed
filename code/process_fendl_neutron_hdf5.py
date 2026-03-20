@@ -46,7 +46,9 @@ def process_fendl_neutron_hdf5(repodir, destination, endf_file=None):
         try:
             with warnings.catch_warnings():
                 warnings.simplefilter('ignore', UserWarning)
-                data = openmc.data.IncidentNeutron.from_njoy(endf_path)
+                data = openmc.data.IncidentNeutron.from_njoy(
+                    endf_path, njoy_exec='/opt/NJOY2016/bin/njoy'
+                )
         except Exception as e:
             print(f'Error converting {endf_path.name}: {e}')
             raise

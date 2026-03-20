@@ -34,7 +34,7 @@ From: ubuntu:24.04
     cd /opt &&
     git clone --branch master https://github.com/openmc-dev/openmc.git &&
     cd openmc &&
-    pip install .
+    pip install --break-system-packages .
 
 %runscript
 
