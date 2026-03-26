@@ -23,7 +23,7 @@ jobs:
         run: |
           git config user.email "ci@github.com"
           git config user.name "CI"
-          git fetch origin git-annex
+          git fetch origin git-annex:git-annex
           git annex init
           git annex get general-purpose/neutron/n_0325_3-Li-6.endf
           git annex get general-purpose/neutron/n_2631_26-Fe-56.endf
