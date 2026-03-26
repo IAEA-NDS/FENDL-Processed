@@ -41,5 +41,4 @@ From: ubuntu:24.04
 
 %runscript
 
-    python code/process_fendl_hdf5.py "$@"
     exec python code/process_fendl.py "$@"
