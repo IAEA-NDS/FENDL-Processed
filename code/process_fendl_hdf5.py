@@ -39,13 +39,13 @@ library_type = args.library_type
 endf_file = args.endf_file
 
 repodir = '.'
-destination = Path('general-purpose/hdf5')
+basedir = Path('general-purpose')
 
 library = openmc.data.DataLibrary()
 
 if library_type in ('neutron', 'all'):
     print('--- converting neutron ENDF files to HDF5 ---')
-    neutron_dest = destination / 'neutron'
+    neutron_dest = basedir / 'neutron' / 'hdf5'
     neutron_lib = process_fendl_neutron_hdf5(
         repodir, neutron_dest, endf_file=endf_file
     )
@@ -54,7 +54,7 @@ if library_type in ('neutron', 'all'):
 
 if library_type in ('photon', 'all'):
     print('--- converting photon ENDF files to HDF5 ---')
-    photon_dest = destination / 'photon'
+    photon_dest = basedir / 'photon' / 'hdf5'
     photon_lib = process_fendl_photon_hdf5(
         repodir, photon_dest, endf_file=endf_file
     )
@@ -62,5 +62,5 @@ if library_type in ('photon', 'all'):
         library.register_file(h5_file)
 
 # Write cross_sections.xml
-print('Writing', destination / 'cross_sections.xml')
-library.export_to_xml(destination / 'cross_sections.xml')
+print('Writing', basedir / 'cross_sections.xml')
+library.export_to_xml(basedir / 'cross_sections.xml')
