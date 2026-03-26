@@ -18,7 +18,7 @@ jobs:
       - name: Install git-annex
         run: sudo apt-get update && sudo apt-get install -y git-annex
 
-      - name: Fetch test ENDF files
+      - name: Fetch test ENDF files from submodule
         working-directory: fendl-endf
         run: |
           git config user.email "ci@github.com"
@@ -33,6 +33,19 @@ jobs:
           git annex get general-purpose/deuteron/d_2631_26-Fe-56.endf
           git annex get general-purpose/atom/ph_0300_3-Li.endf
           git annex get general-purpose/atom/ph_2600_26-Fe.endf
+
+      - name: Fetch NJOY input files and processed dependencies
+        run: |
+          git config user.email "ci@github.com"
+          git config user.name "CI"
+          git fetch origin git-annex:git-annex
+          git annex init
+          git annex get general-purpose/neutron/njoy/03Li006.nji
+          git annex get general-purpose/neutron/njoy/26Fe056.nji
+          git annex get general-purpose/proton/njoy/03Li006.nji
+          git annex get general-purpose/proton/njoy/26Fe056.nji
+          git annex get general-purpose/deuteron/njoy/03Li006.nji
+          git annex get general-purpose/deuteron/njoy/26Fe056.nji
 
       - name: Install Apptainer
         uses: eWaterCycle/setup-apptainer@v2
