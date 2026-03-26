@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Install git-annex
+        run: sudo apt-get update && sudo apt-get install -y git-annex
+
+      - name: Fetch test ENDF files
+        working-directory: fendl-endf
+        run: |
+          git annex init
+          git annex get general-purpose/neutron/n_0325_3-Li-6.endf
+          git annex get general-purpose/neutron/n_2631_26-Fe-56.endf
+          git annex get general-purpose/proton/p_0325_3-Li-6.endf
+          git annex get general-purpose/proton/p_2631_26-Fe-56.endf
+          git annex get general-purpose/deuteron/d_0325_3-Li-6.endf
+          git annex get general-purpose/deuteron/d_2631_26-Fe-56.endf
+          git annex get general-purpose/atom/ph_0300_3-Li.endf
+          git annex get general-purpose/atom/ph_2600_26-Fe.endf
+
+      - name: Install Apptainer
+        uses: eWaterCycle/setup-apptainer@v2
+
+      - name: Build container
+        run: apptainer build code/process_fendl.sif code/process_fendl.def
+
+      - name: Test neutron processing (Li-6)
+        run: apptainer run code/process_fendl.sif neutron n_0325_3-Li-6.endf
+
+      - name: Test neutron processing (Fe-56)
+        run: apptainer run code/process_fendl.sif neutron n_2631_26-Fe-56.endf
+
+      - name: Test proton processing (Li-6)
+        run: apptainer run code/process_fendl.sif proton p_0325_3-Li-6.endf
+
+      - name: Test proton processing (Fe-56)
+        run: apptainer run code/process_fendl.sif proton p_2631_26-Fe-56.endf
+
+      - name: Test deuteron processing (Li-6)
+        run: apptainer run code/process_fendl.sif deuteron d_0325_3-Li-6.endf
+
+      - name: Test deuteron processing (Fe-56)
+        run: apptainer run code/process_fendl.sif deuteron d_2631_26-Fe-56.endf
