@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: ubuntu:22.04
+From: ubuntu:24.04
 
 
 %environment
@@ -11,14 +11,14 @@ From: ubuntu:22.04
 %post
 
     apt update &&
-    apt install -y git=1:2.34.1-1ubuntu1.10 &&
-    apt install -y cmake=3.22.1-1ubuntu1.22.04.2 &&
-    apt install -y gfortran=4:11.2.0-1ubuntu1 &&
-    apt install -y python-is-python3=3.9.2-2 &&
-    apt install -y ghostscript=9.55.0~dfsg1-0ubuntu5.6 &&
-    apt install -y exiftool &&
-    apt install -y qpdf &&
-    apt install -y locales &&
+    apt install -y git=1:2.43.0-1ubuntu7.3 &&
+    apt install -y cmake=3.28.3-1build7 &&
+    apt install -y gfortran=4:13.2.0-7ubuntu1 &&
+    apt install -y python-is-python3=3.11.4-1 &&
+    apt install -y ghostscript=10.02.1~dfsg1-0ubuntu7.8 &&
+    apt install -y libimage-exiftool-perl=12.76+dfsg-1 &&
+    apt install -y qpdf=11.9.0-1.1ubuntu0.1 &&
+    apt install -y locales=2.39-0ubuntu8.7 &&
     cd /opt &&
     git clone https://github.com/IAEA-NDS/NJOY2016.git &&
     cd NJOY2016 &&
