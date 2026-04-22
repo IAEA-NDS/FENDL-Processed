@@ -82,17 +82,15 @@ if 'ace' in formats:
         )
 
 if 'hdf5' in formats:
-    # Lazy import to avoid requiring openmc when only producing ACE files
     import openmc.data
-    from process_fendl_neutron_hdf5 import process_fendl_neutron_hdf5
     from process_fendl_photon_hdf5 import process_fendl_photon_hdf5
 
     hdf5_library = openmc.data.DataLibrary()
 
     if library_type in ('neutron', 'all'):
-        print('--- converting neutron ENDF files to HDF5 ---')
+        # Neutron HDF5 files are produced by process_fendl_neutron_lib above,
+        # from the same FENDL ACE, to keep ACE and HDF5 consistent.
         neutron_dest = basedir / 'neutron' / 'hdf5'
-        process_fendl_neutron_hdf5('.', neutron_dest, endf_file=endf_file)
         for h5_file in sorted(neutron_dest.glob('*.h5')):
             hdf5_library.register_file(h5_file)
 

@@ -60,6 +60,15 @@ def run_fendl_njoy(pardic):
     ret.check_returncode()
     ret = subprocess.run(['ps2pdf', outputs['htrplot'], outputs['htrplotpdf']])
     ret.check_returncode()
+
+    # Produce HDF5 from the FENDL ACE (reuses the same nuclear data).
+    import warnings
+    import openmc.data
+    os.makedirs(os.path.dirname(outputs['h5']), exist_ok=True)
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', UserWarning)
+        data = openmc.data.IncidentNeutron.from_ace(outputs['ace'])
+    data.export_to_hdf5(outputs['h5'], 'w')
     return
 
 
@@ -73,6 +82,8 @@ def determine_fendl_paths(info, repodir, njoyexe, njoylib):
     ph_endf_file = 'ph_%02d00_%d-%s.endf' % (info['charge'], info['charge'], info['symb'])
     padsymb = ('%-2s' % info['symb']).replace(' ','_')
     ace_file = '%02d%s%03d%s' % (info['charge'], padsymb, info['mass'], info['meta'])
+    meta_suffix = '_m1' if info['meta'] == 'm' else ''
+    h5_file = '%s%d%s.h5' % (info['symb'], info['mass'], meta_suffix)
     xsd_file = ace_file + '.xsd'
     g_file = ace_file + '.g'
     m_file = ace_file + '.m'
@@ -99,6 +110,7 @@ def determine_fendl_paths(info, repodir, njoyexe, njoylib):
         'm': os.path.join(repodir, 'general-purpose/neutron/group', m_file),
         'ace': os.path.join(repodir, 'general-purpose/neutron/ace', ace_file),
         'xsd': os.path.join(repodir, 'general-purpose/neutron/ace', xsd_file),
+        'h5': os.path.join(repodir, 'general-purpose/neutron/hdf5', h5_file),
         'aceplot': os.path.join(repodir, 'general-purpose/neutron/plot', aceplot_file),
         'aceplotpdf': os.path.join(repodir, 'general-purpose/neutron/plot', aceplot_pdffile),
         'htrplot': os.path.join(repodir, 'general-purpose/neutron/plot', htrplot_file),
