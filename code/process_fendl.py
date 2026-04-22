@@ -32,6 +32,7 @@ from process_fendl_base import (
 from process_fendl_neutron import process_fendl_neutron_lib
 from process_fendl_proton import process_fendl_proton_lib
 from process_fendl_deuteron import process_fendl_deuteron_lib
+from process_fendl_photoatomic import process_fendl_photoatomic_lib
 import argparse
 
 
@@ -82,9 +83,13 @@ if 'ace' in formats:
         )
 
 if 'hdf5' in formats:
-    import openmc.data
-    from process_fendl_photon_hdf5 import process_fendl_photon_hdf5
+    if library_type in ('photon', 'all'):
+        print('--- processing photo-atomic ENDF files ---')
+        process_fendl_photoatomic_lib(
+            '.', njoyexe, njoylib, njoyvers, fendlvers, cdate, endf_file=endf_file
+        )
 
+    import openmc.data
     hdf5_library = openmc.data.DataLibrary()
 
     if library_type in ('neutron', 'all'):
@@ -95,9 +100,7 @@ if 'hdf5' in formats:
             hdf5_library.register_file(h5_file)
 
     if library_type in ('photon', 'all'):
-        print('--- converting photon ENDF files to HDF5 ---')
         photon_dest = basedir / 'photon' / 'hdf5'
-        process_fendl_photon_hdf5('.', photon_dest, endf_file=endf_file)
         for h5_file in sorted(photon_dest.glob('*.h5')):
             hdf5_library.register_file(h5_file)
 
