@@ -179,8 +179,9 @@ def should_reprocess(fendl_paths):
 def process_fendl_endf(run_fendl_njoy, fendl_paths, njoyvers, fendlvers, cdate):
     """Process one neutron ENDF file in FENDL library."""
     check_input_files_available(fendl_paths)
-    njoyinp = fendl_paths['inputs']['njoyinp']
-    update_njoy_inputfile(njoyinp, njoyvers, fendlvers, cdate)
+    njoyinp = fendl_paths['inputs'].get('njoyinp')
+    if njoyinp is not None:
+        update_njoy_inputfile(njoyinp, njoyvers, fendlvers, cdate)
     if should_reprocess(fendl_paths):
         for k, curpath in fendl_paths['outputs'].items():
             if os.path.isfile(curpath) or os.path.islink(curpath):
@@ -191,11 +192,13 @@ def process_fendl_endf(run_fendl_njoy, fendl_paths, njoyvers, fendlvers, cdate):
         for p in fendl_paths['outputs'].values():
             if p.endswith('.pdf'):
                 remove_metadata_from_pdf(p, cdate)
-        ace_file = fendl_paths['outputs']['ace']
-        set_acefile_date(ace_file, cdate)
-        njoy_outfile = fendl_paths['outputs']['njoyout']
-        set_njoy_outfile_date(njoy_outfile, cdate)
-        zero_njoy_outfile_durations(njoy_outfile)
+        ace_file = fendl_paths['outputs'].get('ace')
+        if ace_file is not None:
+            set_acefile_date(ace_file, cdate)
+        njoy_outfile = fendl_paths['outputs'].get('njoyout')
+        if njoy_outfile is not None:
+            set_njoy_outfile_date(njoy_outfile, cdate)
+            zero_njoy_outfile_durations(njoy_outfile)
         # record checksums
         curhashes_inputs = {k: filehash(f) for k, f in fendl_paths['inputs'].items()}
         curhashes_outputs = {k: filehash(f) for k, f in fendl_paths['outputs'].items()}

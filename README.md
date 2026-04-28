@@ -6,8 +6,8 @@ Fusion Evaluated Nuclear Data Library (FENDL)
 whose different versions are published on the
 IAEA-NDS website at <https://nds.iaea.org/fendl/>.
 These types of derived files are included
-(n, p, d indicates their presence for neutrons, protons,
-and deuterons respectively):
+(n, p, d, ph indicates their presence for neutrons, protons,
+deuterons, and photons respectively):
 
 - NJOY input and output files (n, p, d)
 - ACE files for Monte Carlo codes (n, p, d)
@@ -15,6 +15,7 @@ and deuterons respectively):
 - GENDF files for sensitivity studies (n)
 - Plots to visualize cross sections (n, p, d)
 - Plots to visualize heating (n)
+- HDF5 files for OpenMC (n, ph)
 
 Please note that these files are not directly stored
 in this repository but symlinks to them. The
@@ -147,8 +148,8 @@ You can execute this command several
 times in parallel to speed up the re-creation
 of derived files.
 
-To re-process only a specific sublibrary (neutron, proton or deuteron),
-provide the sublibrary name as argument, e.g.
+To re-process only a specific sublibrary (neutron, proton, deuteron,
+or photon), provide the sublibrary name as argument, e.g.
 ```
 apptainer run code/process_fendl.sif neutron
 ```
@@ -157,6 +158,12 @@ To re-process only a single ENDF file from a sublibrary, provide
 the ENDF filename as second argument, e.g.
 ```
 apptainer run code/process_fendl.sif neutron n_0728_7-N-15.endf
+```
+
+To produce only specific output formats, use the `--formats` flag
+with `ace` and/or `hdf5` (default: both), e.g.
+```
+apptainer run code/process_fendl.sif neutron --formats hdf5
 ```
 
 If you haven't modified any of the NJOY input files
