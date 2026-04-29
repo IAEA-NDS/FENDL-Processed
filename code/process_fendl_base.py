@@ -162,17 +162,26 @@ def should_reprocess(fendl_paths):
     with open(trackfile, 'r') as f:
         storedhashes = json.load(f)
     curhashes = {k: filehash(f) for k, f in fendl_paths['outputs'].items()}
+    outhashes = storedhashes['outputs']
+    if set(curhashes) != set(outhashes):
+        return True
+
     for k in curhashes:
-        if curhashes[k] != storedhashes['outputs'][k]:
+        if curhashes[k] != outhashes[k]:
             raise ValueError(
                 'Hashes of output files do not match those in trackdb!\n'
                 'maybe files were reprocessed without using this script?'
             )
 
     curhashes = {k: filehash(f) for k, f in fendl_paths['inputs'].items()}
+    inphashes = storedhashes['inputs']
+    if set(curhashes) != set(outhashes):
+        return True
+
     for k in curhashes:
-        if curhashes[k] != storedhashes['inputs'][k]:
+        if curhashes[k] != inphashes[k]:
             return True
+
     return False
 
 
