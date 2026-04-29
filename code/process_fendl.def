@@ -27,7 +27,7 @@ From: ubuntu:24.04
     git clone https://github.com/IAEA-NDS/NJOY2016.git &&
     cd NJOY2016 &&
     # checkout NJOY2016.74 including patches from IAEA-NDS
-    git checkout 9bc445985af243fa02eab41916a9578ff357e119 &&
+    git checkout 3e69974082500985a7ce56dea46684b4ec4cb69e &&
     mkdir bin && cd bin &&
     cmake -D CMAKE_BUILD_TYPE=Release .. &&
     make &&
