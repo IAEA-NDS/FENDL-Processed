@@ -269,7 +269,7 @@ def set_njoy_outfile_date(filename, datetime_obj):
 def zero_njoy_outfile_durations(filename):
     with open(filename, 'r') as f:
         lines = f.readlines()
-    rex = re.compile('[0-9]{1,4}\.[0-9]s$')
+    rex = re.compile(r'[0-9]{1,4}\.[0-9]s$')
     for i in range(len(lines)):
         line = lines[i]
         m = rex.search(line)

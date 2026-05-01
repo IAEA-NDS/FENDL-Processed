@@ -122,13 +122,13 @@ def filehash(fname):
 
 def is_endf_file(fpath):
     """Return whether ENDF file is named according to FENDL convention."""
-    p = re.compile('(?:^|.*/)([a-z][a-z]?)_([0-9]+)_([0-9]+)-([A-Z][a-z]?)(?:-([0-9]+m?))?\.endf$')
+    p = re.compile(r'(?:^|.*/)([a-z][a-z]?)_([0-9]+)_([0-9]+)-([A-Z][a-z]?)(?:-([0-9]+m?))?\.endf$')
     return p.match(fpath) is not None
 
 
 def get_endf_info(fpath):
     """Return a dictionary with information about an ENDF file"""
-    p = re.compile('(?:^|.*/)([a-z][a-z]?)_([0-9]+)_([0-9]+)-([A-Z][a-z]?)(?:-([0-9]+)(m?))?\.endf$')
+    p = re.compile(r'(?:^|.*/)([a-z][a-z]?)_([0-9]+)_([0-9]+)-([A-Z][a-z]?)(?:-([0-9]+)(m?))?\.endf$')
     m = p.match(fpath)
     if not m:
         raise ValueError('The file ' + fpath + ' is not an ENDF file following FENDL naming convention')
