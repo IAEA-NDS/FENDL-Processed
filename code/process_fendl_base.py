@@ -175,7 +175,7 @@ def should_reprocess(fendl_paths):
 
     curhashes = {k: filehash(f) for k, f in fendl_paths['inputs'].items()}
     inphashes = storedhashes['inputs']
-    if set(curhashes) != set(outhashes):
+    if set(curhashes) != set(inphashes):
         return True
 
     for k in curhashes:
