@@ -221,7 +221,7 @@ def process_fendl_endf(run_fendl_njoy, fendl_paths, njoyvers, fendlvers, cdate):
 
 def process_fendl_sublib(
     repodir, sublib_path, run_njoy, determine_fendl_paths,
-    njoyexe, njoylib, njoyvers, fendlvers, cdate, endf_file=None
+    njoyexe, njoylib, openmclib, njoyvers, fendlvers, cdate, endf_file=None
 ):
     endf_sublib = os.path.join(repodir, sublib_path)
     endf_files = os.listdir(endf_sublib)
@@ -234,7 +234,7 @@ def process_fendl_sublib(
             fendl_endf_file = os.path.join(endf_sublib, cur_endf_file)
             lock_file(fendl_endf_file)
             info = get_endf_info(fendl_endf_file)
-            fendl_paths = determine_fendl_paths(info, repodir, njoyexe, njoylib)
+            fendl_paths = determine_fendl_paths(info, repodir, njoyexe, njoylib, openmclib)
             process_fendl_endf(run_njoy, fendl_paths, njoyvers, fendlvers, cdate)
             unlock_file(fendl_endf_file)
         except FileExistsError:

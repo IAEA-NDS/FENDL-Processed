@@ -35,7 +35,7 @@ def run_fendl_njoy(pardic):
     return
 
 
-def determine_fendl_paths(info, repodir, njoyexe, njoylib):
+def determine_fendl_paths(info, repodir, njoyexe, njoylib, openmclib):
     """Return dictionary with paths to photo-atomic FENDL outputs."""
     if info['incpart'] != 'ph':
         raise ValueError('The info dic should be for photo-atomic data')
@@ -50,6 +50,7 @@ def determine_fendl_paths(info, repodir, njoyexe, njoylib):
         'ph_endf': os.path.join(
             repodir, 'fendl-endf/general-purpose/atom', ph_endf_file
         ),
+        'openmclib': openmclib,
     }
     fendl_paths['outputs'] = {
         'h5': os.path.join(repodir, 'general-purpose/photon/hdf5', h5_file),
@@ -61,12 +62,12 @@ def determine_fendl_paths(info, repodir, njoyexe, njoylib):
 
 
 def process_fendl_photoatomic_lib(
-    repodir, njoyexe, njoylib, njoyvers, fendlvers, cdate, endf_file=None
+    repodir, njoyexe, njoylib, openmclib, njoyvers, fendlvers, cdate, endf_file=None
 ):
     """Process all photo-atomic ENDF files in FENDL library."""
     endf_sublib = os.path.join('fendl-endf', 'general-purpose/atom')
     process_fendl_sublib(repodir, endf_sublib, run_fendl_njoy,
-                         determine_fendl_paths, njoyexe, njoylib,
+                         determine_fendl_paths, njoyexe, njoylib, openmclib,
                          njoyvers, fendlvers, cdate, endf_file=endf_file)
 
 
@@ -76,5 +77,5 @@ if __name__ == '__main__':
     cdate = get_creation_date()
     process_fendl_photoatomic_lib(
         '.', '/opt/NJOY2016/bin/njoy', '/opt/NJOY2016/bin/libnjoy.so',
-        njoyvers, fendlvers, cdate
+        '/opt/openmc/.git/HEAD', njoyvers, fendlvers, cdate
     )
