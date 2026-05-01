@@ -22,12 +22,14 @@
 #
 ############################################################
 
+import os
 import sys
 from pathlib import Path
 from process_fendl_base import (
     get_njoy_version,
     get_fendl_version,
-    get_creation_date
+    get_creation_date,
+    process_fendl_endf,
 )
 from process_fendl_neutron import process_fendl_neutron_lib
 from process_fendl_proton import process_fendl_proton_lib
@@ -64,6 +66,38 @@ cdate = get_creation_date()
 
 basedir = Path('general-purpose')
 
+
+def process_cross_sections_xml(repodir, basedir, openmclib, njoyvers, fendlvers, cdate):
+    """Reconcile general-purpose/cross_sections.xml with the neutron and
+    photon HDF5 files currently on disk, using the same trackdb-hash
+    machinery as the per-isotope outputs."""
+    import openmc.data
+
+    inputs = {'openmclib': openmclib}
+    for sublib in ('neutron', 'photon'):
+        h5_dir = basedir / sublib / 'hdf5'
+        if h5_dir.is_dir():
+            for h5 in sorted(h5_dir.glob('*.h5')):
+                inputs[f'h5/{sublib}/{h5.name}'] = str(h5)
+
+    fendl_paths = {
+        'inputs': inputs,
+        'outputs': {
+            'cross_sections_xml': str(basedir / 'cross_sections.xml'),
+        },
+        'trackfile': os.path.join(repodir, 'trackdb', 'cross_sections.json'),
+    }
+
+    def run_xml_export(pardic):
+        lib = openmc.data.DataLibrary()
+        for key in sorted(pardic['inputs']):
+            if key.startswith('h5/'):
+                lib.register_file(pardic['inputs'][key])
+        lib.export_to_xml(pardic['outputs']['cross_sections_xml'])
+
+    process_fendl_endf(run_xml_export, fendl_paths, njoyvers, fendlvers, cdate)
+
+
 if 'ace' in formats:
     if library_type in ('neutron', 'all'):
         print('--- processing neutron ENDF files ---')
@@ -90,20 +124,4 @@ if 'hdf5' in formats:
             '.', njoyexe, njoylib, openmclib, njoyvers, fendlvers, cdate, endf_file=endf_file
         )
 
-    import openmc.data
-    hdf5_library = openmc.data.DataLibrary()
-
-    if library_type in ('neutron', 'all'):
-        # Neutron HDF5 files are produced by process_fendl_neutron_lib above,
-        # from the same FENDL ACE, to keep ACE and HDF5 consistent.
-        neutron_dest = basedir / 'neutron' / 'hdf5'
-        for h5_file in sorted(neutron_dest.glob('*.h5')):
-            hdf5_library.register_file(h5_file)
-
-    if library_type in ('photon', 'all'):
-        photon_dest = basedir / 'photon' / 'hdf5'
-        for h5_file in sorted(photon_dest.glob('*.h5')):
-            hdf5_library.register_file(h5_file)
-
-    print('Writing', basedir / 'cross_sections.xml')
-    hdf5_library.export_to_xml(basedir / 'cross_sections.xml')
+    process_cross_sections_xml('.', basedir, openmclib, njoyvers, fendlvers, cdate)
