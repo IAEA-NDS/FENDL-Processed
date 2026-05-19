@@ -74,7 +74,7 @@ def process_cross_sections_xml(repodir, basedir, openmclib, njoyvers, fendlvers,
     import openmc.data
 
     inputs = {'openmclib': openmclib}
-    for sublib in ('neutron', 'photon'):
+    for sublib in ('neutron', 'atom'):
         h5_dir = basedir / sublib / 'hdf5'
         if h5_dir.is_dir():
             for h5 in sorted(h5_dir.glob('*.h5')):

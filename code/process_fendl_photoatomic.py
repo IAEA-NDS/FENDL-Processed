@@ -53,7 +53,7 @@ def determine_fendl_paths(info, repodir, njoyexe, njoylib, openmclib):
         'openmclib': openmclib,
     }
     fendl_paths['outputs'] = {
-        'h5': os.path.join(repodir, 'general-purpose/photon/hdf5', h5_file),
+        'h5': os.path.join(repodir, 'general-purpose/atom/hdf5', h5_file),
     }
     fendl_paths['trackfile'] = os.path.join(
         repodir, 'trackdb/trackdb_photon', track_file

@@ -17,6 +17,13 @@ deuterons, and photons respectively):
 - Plots to visualize heating (n)
 - HDF5 files for OpenMC (n, ph)
 
+The photo-atomic HDF5 files are stored in the `general-purpose/atom`
+directory. The photo-atomic sublibrary is referred to as `photon`
+on the command line of the processing pipeline, but its derived
+files are placed under the `atom` directory for historic continuity
+with the naming used for the photo-atomic ENDF source files and on
+the IAEA-NDS website.
+
 Please note that these files are not directly stored
 in this repository but symlinks to them. The
 command line tool [git-annex] can be used to download
