@@ -1,0 +1,10 @@
+{
+    "inputs": {
+        "config": "5c5c9422f31d7db1b144ec6a7dd2c5570a25602d04c967f258100547afcbcad7",
+        "ph_endf": "fa4fe47abbdb13c88cb17ce98f38ec5873e47baa4f3c422f0b3ff4a1377c908c",
+        "openmclib": "7c19131b2b1eab88215f98b53aa91be1bff14d34b6a0eae90fc73c1842bf3513"
+    },
+    "outputs": {
+        "h5": "6e0a66b38155274051df0bd84239e60d1b7a48e7ea9615b2f3875918eb842336"
+    }
+}
