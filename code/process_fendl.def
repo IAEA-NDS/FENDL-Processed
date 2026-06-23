@@ -34,7 +34,7 @@ From: ubuntu:24.04
     cd /usr/local/bin &&
     ln -s /opt/NJOY2016/bin &&
     cd /opt &&
-    git clone https://github.com/openmc-dev/openmc.git && cd openmc && git checkout 1f7ac4215f45dc0c88a36240230cf16d7cb4cc5b &&
+    git clone https://github.com/openmc-dev/openmc.git && cd openmc && git checkout 02eb999af1e30b6a61c092baeebe2329ac5719c8 &&
     python3 -m venv /opt/venv &&
     /opt/venv/bin/pip install .
 
