@@ -1,1 +1,1 @@
-fd1d9d18-4d6f-435e-a43d-a04f53d46049 bucket=fendl-32d-prep datacenter=eu-north-1 encryption=none host=s3.amazonaws.com name=fendl-prep-aws-s3 port=80 storageclass=STANDARD type=S3 timestamp=1794483092s
+fd1d9d18-4d6f-435e-a43d-a04f53d46049 bucket=fendl-32d-prep datacenter=eu-north-1 encryption=none host=s3.amazonaws.com name=fendl-proc-aws-s3 port=80 storageclass=STANDARD type=S3 timestamp=1794483216s
