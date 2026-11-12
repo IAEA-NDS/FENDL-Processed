@@ -102,7 +102,7 @@ def determine_fendl_paths(info, repodir, njoyexe, njoylib, openmclib):
         'ph_endf': os.path.join(repodir, 'fendl-endf/general-purpose/atom', ph_endf_file),
         'njoyinp': os.path.join(repodir, 'general-purpose/neutron/njoy', njoyinp_file),
         'njoyexe': njoyexe,
-        'njoylib': njoylib,
+        # 'njoylib': njoylib,   newer NJOY does not produce this file anymore
         'openmclib': openmclib,
     }
     fendl_paths['outputs'] = {

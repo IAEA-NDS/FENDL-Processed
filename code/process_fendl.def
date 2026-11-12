@@ -10,24 +10,23 @@ From: ubuntu:24.04
 
 
 %post
-
     apt update &&
-    apt install -y git=1:2.43.0-1ubuntu7.3 &&
+    apt install -y git=1:2.43.0-1ubuntu7.4 &&
     apt install -y cmake=3.28.3-1build7 &&
     apt install -y gfortran=4:13.2.0-7ubuntu1 &&
     apt install -y python3=3.12.3-0ubuntu2.1 &&
     apt install -y python-is-python3=3.11.4-1 &&
     apt install -y python3-pip=24.0+dfsg-1ubuntu1.3 &&
     apt install -y python3-venv=3.12.3-0ubuntu2.1 &&
-    apt install -y ghostscript=10.02.1~dfsg1-0ubuntu7.8 &&
+    apt install -y ghostscript=10.02.1~dfsg1-0ubuntu7.10 &&
     apt install -y libimage-exiftool-perl=12.76+dfsg-1 &&
     apt install -y qpdf=11.9.0-1.1ubuntu0.1 &&
-    apt install -y locales=2.39-0ubuntu8.7 &&
+    apt install -y locales=2.39-0ubuntu8.9 &&
     cd /opt &&
     git clone https://github.com/IAEA-NDS/NJOY2016.git &&
     cd NJOY2016 &&
-    # checkout NJOY2016.74 including patches from IAEA-NDS
-    git checkout 3e69974082500985a7ce56dea46684b4ec4cb69e &&
+    # checkout NJOY2016.80 including patches from IAEA-NDS
+    git checkout fa1ebf23bc518fb8f59f07eb2e195be7038594a9 &&
     mkdir bin && cd bin &&
     cmake -D CMAKE_BUILD_TYPE=Release .. &&
     make &&

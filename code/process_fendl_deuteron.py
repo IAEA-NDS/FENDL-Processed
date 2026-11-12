@@ -77,7 +77,7 @@ def determine_fendl_paths(info, repodir, njoyexe, njoylib, openmclib):
         'd_endf': os.path.join(repodir, 'fendl-endf/general-purpose/deuteron', d_endf_file),
         'njoyinp': os.path.join(repodir, 'general-purpose/deuteron/njoy', njoyinp_file),
         'njoyexe': njoyexe,
-        'njoylib': njoylib,
+        # 'njoylib': njoylib,   newer NJOY does not produce this file anymore
     }
     fendl_paths['outputs'] = {
         'ace': os.path.join(repodir, 'general-purpose/deuteron/ace', ace_file),
