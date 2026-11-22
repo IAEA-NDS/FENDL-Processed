@@ -3,13 +3,13 @@
         "config": "5c5c9422f31d7db1b144ec6a7dd2c5570a25602d04c967f258100547afcbcad7",
         "p_endf": "c54bbf8be8c1195e3c71735e13d62690ba8b80339edfdc861fc8ded0c89a3224",
         "njoyinp": "5d4aa46e72c722584996282bf35ad86219495c2daed368993eaacea266abf9cb",
-        "njoyexe": "93bf969302bffc24ec163a62bd9fd4fb9afa608a2fbd4c539013503e6c8ef35a"
+        "njoyexe": "660290f0e1d27a040eb77c798e3b42615905d4ec3384e2ef1e177a66afac6342"
     },
     "outputs": {
         "ace": "2eddb9ec8230c95c1168b65f85090a317e52896168d75e843925cc5d9fb0bb93",
         "xsd": "8690ca4de040a8a1987e75a2c4d2478e2eeb3a8a15c69ffba2e06a4c3bcff5cf",
         "aceplot": "4ea096f8500d9820182bfbeb55389712f989e3d1838ccb16a8fecb68af977313",
         "aceplotpdf": "da73eec4e2ed3b28169d2c2780e03bd13728b3d9432a56a8091039dd6039fdb6",
-        "njoyout": "8c16b4fc4c43115967102b3312f16d3e68bf0f551e904a1bc3ef212b20a8e838"
+        "njoyout": "cfe78136184894777668ef6a70f4cce27ba96c7a10de222de80d4527058eb9b0"
     }
 }
