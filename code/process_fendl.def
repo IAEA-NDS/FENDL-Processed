@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: ubuntu:24.04
+From: ubuntu@sha256:73b999393d07f2bf65a40373778a44dc9a6d54ad7718d29247d8ff9413c4d6a8
 
 
 %environment
@@ -10,15 +10,36 @@ From: ubuntu:24.04
 
 
 %post
+    SNAPSHOT=20261001T030400Z
+
     apt update &&
-    apt install -y git=1:2.43.0-1ubuntu7.4 &&
+    apt install -y ca-certificates &&
+    update-ca-certificates &&
+    mv /etc/apt/sources.list.d/ubuntu.sources \
+       /etc/apt/sources.list.d/ubuntu.sources.disabled &&
+    cat > /etc/apt/sources.list <<EOF
+deb [check-valid-until=no] \
+https://snapshot.ubuntu.com/ubuntu/${SNAPSHOT}/ \
+noble main restricted universe multiverse
+
+deb [check-valid-until=no] \
+https://snapshot.ubuntu.com/ubuntu/${SNAPSHOT}/ \
+noble-updates main restricted universe multiverse
+
+deb [check-valid-until=no] \
+https://snapshot.ubuntu.com/ubuntu/${SNAPSHOT}/ \
+noble-security main restricted universe multiverse
+EOF
+
+    apt update &&
+    apt install -y git=1:2.43.0-1ubuntu7.3 &&
     apt install -y cmake=3.28.3-1build7 &&
     apt install -y gfortran=4:13.2.0-7ubuntu1 &&
     apt install -y python3=3.12.3-0ubuntu2.1 &&
     apt install -y python-is-python3=3.11.4-1 &&
     apt install -y python3-pip=24.0+dfsg-1ubuntu1.3 &&
     apt install -y python3-venv=3.12.3-0ubuntu2.1 &&
-    apt install -y ghostscript=10.02.1~dfsg1-0ubuntu7.10 &&
+    apt install -y ghostscript=10.02.1~dfsg1-0ubuntu7.9 &&
     apt install -y libimage-exiftool-perl=12.76+dfsg-1 &&
     apt install -y qpdf=11.9.0-1.1ubuntu0.1 &&
     apt install -y locales=2.39-0ubuntu8.9 &&
@@ -26,7 +47,7 @@ From: ubuntu:24.04
     git clone https://github.com/IAEA-NDS/NJOY2016.git &&
     cd NJOY2016 &&
     # checkout NJOY2016.80 including patches from IAEA-NDS
-    git checkout fa1ebf23bc518fb8f59f07eb2e195be7038594a9 &&
+    git checkout 47493630946bf8064594622bde23a3b297337771 &&
     mkdir bin && cd bin &&
     cmake -D CMAKE_BUILD_TYPE=Release .. &&
     make &&
@@ -35,7 +56,8 @@ From: ubuntu:24.04
     cd /opt &&
     git clone https://github.com/openmc-dev/openmc.git && cd openmc && git checkout 02eb999af1e30b6a61c092baeebe2329ac5719c8 &&
     python3 -m venv /opt/venv &&
-    /opt/venv/bin/pip install .
+    /opt/venv/bin/pip install . &&
+    /opt/venv/bin/pip freeze > requirements.lock
 
 %runscript
 
