@@ -263,12 +263,16 @@ the ENDF filename as second argument, e.g.
 ```
 apptainer run code/process_fendl.sif neutron n_0728_7-N-15.endf
 ```
-The last step of the processing writes the `cross_sections.xml` file
-for OpenMC, which requires the HDF5 files of all nuclides of the
-sublibrary. If you re-process only a single file, the run therefore
-ends with an error message about a missing `.h5` file (e.g.
-`general-purpose/neutron/hdf5/Ag107.h5`). The derived files of the
-selected ENDF file have been created at that point.
+Unless `--formats ace` is given (see below), the last step of every
+run writes the `cross_sections.xml` file for OpenMC. It needs all
+neutron and photo-atomic HDF5 files (about 1 GB) and otherwise ends
+with an error message about a missing `.h5` file, after the other
+files have been created. Either download them first, in the root
+directory of the repository,
+```
+git annex get --jobs=4 general-purpose/neutron/hdf5 general-purpose/atom/hdf5
+```
+or skip this step with `--formats ace`.
 
 To produce only specific output formats, use the `--formats` flag
 with `ace` and/or `hdf5` (default: both), e.g.
