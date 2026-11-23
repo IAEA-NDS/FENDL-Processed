@@ -1,0 +1,3 @@
+# Python bytecode caches written when running the processing pipeline
+# (e.g. apptainer run code/process_fendl.sif ...)
+__pycache__/
