@@ -18,7 +18,11 @@
 #     <sublib> can be: neutron, proton, deuteron, photon, all
 #     <endf_file> to process (optional). If none provided,
 #                 all files of the sublibrary will be processed.
-#     --formats: ace (includes plots), hdf5, or both (default: both)
+#     --formats: processing steps to run (default: both)
+#         ace:  neutron, proton and deuteron files (all derived files,
+#               including plots and the neutron HDF5 files)
+#         hdf5: photo-atomic HDF5 files (if <sublib> is photon or all)
+#               and cross_sections.xml
 #
 ############################################################
 
@@ -49,7 +53,11 @@ parser.add_argument(
 )
 parser.add_argument(
     '--formats', nargs='+', choices=['ace', 'hdf5'],
-    default=['ace', 'hdf5'], help='output formats to produce (default: both)'
+    default=['ace', 'hdf5'],
+    help='processing steps to run (default: both). ace: neutron, proton and '
+         'deuteron files (all derived files, including plots and the neutron '
+         'HDF5 files); hdf5: photo-atomic HDF5 files (for photon or all) and '
+         'cross_sections.xml'
 )
 args = parser.parse_args()
 
