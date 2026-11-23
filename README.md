@@ -272,12 +272,25 @@ directory of the repository,
 ```
 git annex get --jobs=4 general-purpose/neutron/hdf5 general-purpose/atom/hdf5
 ```
-or skip this step with `--formats ace`.
+or skip this step with `--formats ace` (not for the photo-atomic
+sublibrary, which is then not processed).
 
-To produce only specific output formats, use the `--formats` flag
-with `ace` and/or `hdf5` (default: both), e.g.
+The `--formats` option selects which processing steps are run
+(default: both):
+
+- `ace` processes the ENDF files of the neutron, proton and deuteron
+  sublibraries. It creates all their derived files, i.e. not only the
+  ACE files but also the NJOY output and plots and, for neutrons, the
+  MATXS, GENDF and HDF5 files.
+- `hdf5` processes the ENDF files of the photo-atomic sublibrary to
+  HDF5 files (with `photon` or `all` as sublibrary) and writes the
+  `cross_sections.xml` file. It does not create the neutron HDF5
+  files.
+
+For instance, to process the neutron sublibrary without writing
+`cross_sections.xml`:
 ```
-apptainer run code/process_fendl.sif neutron --formats hdf5
+apptainer run code/process_fendl.sif neutron --formats ace
 ```
 
 If you haven't modified any of the NJOY input files
